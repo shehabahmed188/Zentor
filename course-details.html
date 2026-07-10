@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Zentor | تفاصيل الكورس</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2a7de1;
+      --primary-hover: #1a67c4;
+      --primary-light: #e8f1fc;
+      --background: #f4f7fc;
+      --card: #ffffff;
+      --text: #0b1e33;
+      --text-secondary: #5a6d80;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px rgba(0,0,0,0.07);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+      --glass-bg: rgba(255,255,255,0.65);
+      --glass-border: rgba(255,255,255,0.4);
+      --glass-blur: blur(14px);
+      --radius: 16px;
+      --radius-lg: 20px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --sidebar-width: 260px;
+      --success: #16a34a;
+      --warning: #f59e0b;
+    }
+    .dark {
+      --background: #0b0e14;
+      --card: #1a1f2b;
+      --text: #eef2f6;
+      --text-secondary: #9aa4b2;
+      --border: #2a3140;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow: 0 4px 6px rgba(0,0,0,0.3);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+      --glass-bg: rgba(26,31,43,0.7);
+      --glass-border: rgba(255,255,255,0.08);
+      --primary-light: #1a2b44;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+    /* Sidebar (same as before) */
+    .sidebar {
+      position: fixed;
+      top: 0; bottom: 0;
+      width: var(--sidebar-width);
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-right: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+      padding: 1.5rem 1rem;
+      transition: transform var(--transition);
+    }
+    [dir="rtl"] .sidebar { right: 0; border-right: none; border-left: 1px solid var(--glass-border); }
+    [dir="ltr"] .sidebar { left: 0; }
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 2rem;
+      text-decoration: none;
+    }
+    .sidebar-logo i { font-size: 1.6rem; }
+    .sidebar-nav { flex:1; display:flex; flex-direction: column; gap: 0.4rem; }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all var(--transition);
+    }
+    .sidebar-link i { width: 20px; text-align: center; }
+    .sidebar-link:hover { background: var(--primary-light); color: var(--primary); }
+    .sidebar-link.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(42,125,225,0.3); }
+    .sidebar-footer { margin-top: auto; }
+    .logout-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .logout-btn:hover { background: #fee2e2; color: #dc2626; border-color: #fecaca; }
+
+    .main {
+      flex: 1;
+      margin-right: var(--sidebar-width);
+      padding: 1.5rem;
+      transition: margin var(--transition);
+    }
+    [dir="ltr"] .main { margin-right: 0; margin-left: var(--sidebar-width); }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .hamburger {
+      display: none;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .page-title { font-size: 1.8rem; font-weight: 800; }
+    .top-actions { display: flex; gap: 0.5rem; }
+    .action-btn {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 1rem;
+    }
+    .action-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+    .sidebar-overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.4); z-index: 999; }
+
+    /* Course info */
+    .course-header-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+    .course-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .course-desc { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7; }
+    .progress-bar {
+      height: 10px;
+      background: var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #4d9eff);
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+    .progress-text { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* Lessons list */
+    .lessons-section { margin-bottom: 2rem; }
+    .section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; }
+    .lesson-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .lesson-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all var(--transition);
+      flex-wrap: wrap;
+    }
+    .lesson-item:hover { box-shadow: var(--shadow); }
+    .lesson-icon {
+      width: 44px; height: 44px;
+      background: var(--primary-light);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .lesson-info { flex: 1; min-width: 150px; }
+    .lesson-name { font-weight: 600; margin-bottom: 0.2rem; }
+    .lesson-type { font-size: 0.85rem; color: var(--text-secondary); }
+    .lesson-actions { display: flex; gap: 0.5rem; align-items: center; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.4rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      transition: all var(--transition);
+    }
+    .btn-sm { padding: 0.5rem 1.2rem; font-size: 0.85rem; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+    .btn-outline:hover { background: var(--primary); color: white; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { opacity: 0.9; }
+    .watched-badge {
+      background: #dcfce7;
+      color: #166534;
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .dark .watched-badge { background: #1a3a2a; color: #86efac; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      width: 90%;
+      max-width: 800px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      animation: modalIn 0.3s ease-out;
+    }
+    @keyframes modalIn {
+      from { opacity:0; transform: scale(0.95); }
+      to { opacity:1; transform: scale(1); }
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .modal-close {
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    video { width: 100%; border-radius: var(--radius); }
+    iframe { width: 100%; height: 500px; border-radius: var(--radius); border: none; }
+    .skeleton {
+      background: linear-gradient(90deg, var(--border) 25%, transparent 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .empty-state { text-align: center; padding: 2rem; color: var(--text-secondary); }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.9rem 1.8rem;
+      border-radius: 50px;
+      box-shadow: var(--shadow-lg);
+      z-index: 9999;
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      max-width: 90vw;
+    }
+    .toast-error { background: #fee2e2; color: #991b1b; border:1px solid #fecaca; }
+    .toast-success { background: #dcfce7; color: #166534; border:1px solid #bbf7d0; }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(100%); }
+      [dir="ltr"] .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin: 0; }
+      .hamburger { display: flex; }
+      .sidebar-overlay.active { display: block; }
+      .lesson-item { flex-direction: column; align-items: flex-start; }
+      .lesson-actions { width: 100%; justify-content: flex-end; }
+    }
+  </style>
+</head>
+<body>
+<div class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-logo"><i class="fas fa-graduation-cap"></i> Zentor</a>
+  <nav class="sidebar-nav">
+    <a href="dashboard.html" class="sidebar-link"><i class="fas fa-th-large"></i> لوحة التحكم</a>
+    <a href="my-courses.html" class="sidebar-link active"><i class="fas fa-book-open"></i> كورساتي</a>
+    <a href="browse-teachers.html" class="sidebar-link"><i class="fas fa-chalkboard-teacher"></i> المعلمين</a>
+    <a href="assignments.html" class="sidebar-link"><i class="fas fa-tasks"></i> الواجبات</a>
+    <a href="messages.html" class="sidebar-link"><i class="fas fa-comments"></i> الرسائل</a>
+    <a href="profile.html" class="sidebar-link"><i class="fas fa-user-circle"></i> الملف الشخصي</a>
+    <a href="settings.html" class="sidebar-link"><i class="fas fa-cog"></i> الإعدادات</a>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+  </div>
+</div>
+<div class="sidebar-overlay" id="overlay"></div>
+
+<div class="main">
+  <div class="topbar">
+    <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    <h1 class="page-title">تفاصيل الكورس</h1>
+    <div class="top-actions">
+      <button class="action-btn" id="langToggle" title="English"><i class="fas fa-globe"></i></button>
+      <button class="action-btn" id="darkToggle" title="الوضع الليلي"><i class="fas fa-moon"></i></button>
+    </div>
+  </div>
+
+  <!-- Course Info -->
+  <div class="course-header-card" id="courseInfo">
+    <div class="skeleton" style="height:2rem;width:60%;margin-bottom:1rem;"></div>
+    <div class="skeleton" style="height:1rem;width:80%;margin-bottom:1rem;"></div>
+    <div class="skeleton" style="height:10px;margin:1rem 0;"></div>
+    <div class="skeleton" style="height:1rem;width:40%;"></div>
+  </div>
+
+  <!-- Lessons -->
+  <div class="lessons-section">
+    <h2 class="section-title" id="lessonsTitle">الدروس</h2>
+    <div class="lesson-list" id="lessonList">
+      <div class="lesson-item"><div class="skeleton" style="width:44px;height:44px;border-radius:12px;"></div><div class="lesson-info" style="flex:1"><div class="skeleton" style="height:1rem;width:70%;margin-bottom:0.5rem;"></div><div class="skeleton" style="height:0.8rem;width:40%;"></div></div><div class="skeleton" style="height:2rem;width:6rem;border-radius:50px;"></div></div>
+    </div>
+    <div class="empty-state" id="lessonsEmpty" style="display:none;">
+      <i class="fas fa-video-slash"></i>
+      <p>لا توجد دروس بعد</p>
+    </div>
+  </div>
+</div>
+
+<!-- Media Modal -->
+<div class="modal-overlay" id="mediaModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalLessonTitle">عنوان الدرس</h3>
+      <button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="mediaContainer">
+      <!-- dynamic content -->
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+  import { 
+    getFirestore, 
+    doc, 
+    getDoc, 
+    collection, 
+    getDocs, 
+    query, 
+    where, 
+    updateDoc, 
+    arrayUnion,
+    serverTimestamp,
+    setDoc
+  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBOd-cHm8J84BMwdlP8a3zOVlK8sboUFj0",
+    authDomain: "zentor-caaf1.firebaseapp.com",
+    projectId: "zentor-caaf1",
+    storageBucket: "zentor-caaf1.firebasestorage.app",
+    messagingSenderId: "681267238383",
+    appId: "1:681267238383:web:0c93fb405bfd6b5903921a",
+    measurementId: "G-X80GNJHMS5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const html = document.documentElement;
+  const darkToggle = document.getElementById('darkToggle');
+  const langToggle = document.getElementById('langToggle');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const hamburger = document.getElementById('hamburger');
+  const courseInfo = document.getElementById('courseInfo');
+  const lessonList = document.getElementById('lessonList');
+  const lessonsEmpty = document.getElementById('lessonsEmpty');
+  const toast = document.getElementById('toast');
+  const mediaModal = document.getElementById('mediaModal');
+  const closeModal = document.getElementById('closeModal');
+  const modalLessonTitle = document.getElementById('modalLessonTitle');
+  const mediaContainer = document.getElementById('mediaContainer');
+  const lessonsTitle = document.getElementById('lessonsTitle');
+  const pageTitle = document.querySelector('.page-title');
+
+  // Get params
+  const params = new URLSearchParams(window.location.search);
+  const courseId = params.get('courseId');
+  const teacherId = params.get('teacherId');
+  let currentUser = null;
+  let currentCourseData = null;
+  let allLessons = [];
+  let completedLessons = {};
+  let totalLessons = 0;
+
+  if (!courseId || !teacherId) {
+    showToast('رابط غير صحيح', 'error');
+    setTimeout(() => window.location.href = 'my-courses.html', 2000);
+  }
+
+  function showToast(msg, type='error') {
+    toast.textContent = msg;
+    toast.className = `toast toast-${type}`;
+    toast.style.display = 'flex';
+    clearTimeout(window._t);
+    window._t = setTimeout(() => toast.style.display = 'none', 4000);
+  }
+
+  // Dark mode
+  function setDark(on) {
+    html.classList.toggle('dark', on);
+    darkToggle.innerHTML = on ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    localStorage.setItem('zentor_dark_mode', on);
+  }
+  darkToggle.addEventListener('click', ()=> setDark(!html.classList.contains('dark')));
+  setDark(localStorage.getItem('zentor_dark_mode') === 'true');
+
+  // Language
+  function setLang(lang) {
+    html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    html.lang = lang;
+    langToggle.title = lang === 'ar' ? 'English' : 'العربية';
+    pageTitle.textContent = lang === 'ar' ? 'تفاصيل الكورس' : 'Course Details';
+    lessonsTitle.textContent = lang === 'ar' ? 'الدروس' : 'Lessons';
+    document.getElementById('logoutBtn').innerHTML = lang === 'ar' ? '<i class="fas fa-sign-out-alt"></i> تسجيل الخروج' : '<i class="fas fa-sign-out-alt"></i> Logout';
+    // Update sidebar links
+    const links = document.querySelectorAll('.sidebar-link');
+    const arabicLabels = ['لوحة التحكم','كورساتي','المعلمين','الواجبات','الرسائل','الملف الشخصي','الإعدادات'];
+    const englishLabels = ['Dashboard','My Courses','Teachers','Assignments','Messages','Profile','Settings'];
+    const icons = ['fa-th-large','fa-book-open','fa-chalkboard-teacher','fa-tasks','fa-comments','fa-user-circle','fa-cog'];
+    links.forEach((link, i) => {
+      link.innerHTML = `<i class="fas ${icons[i]}"></i> ${lang === 'ar' ? arabicLabels[i] : englishLabels[i]}`;
+    });
+    localStorage.setItem('zentor_lang', lang);
+    if (currentCourseData) renderCourseInfo();
+    if (allLessons.length) renderLessons();
+  }
+  langToggle.addEventListener('click', ()=> setLang(html.lang === 'ar' ? 'en' : 'ar'));
+  setLang(localStorage.getItem('zentor_lang') || 'ar');
+
+  // Sidebar
+  hamburger.addEventListener('click', ()=>{
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+  });
+  overlay.addEventListener('click', ()=>{
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+  });
+
+  // Logout
+  document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+    await signOut(auth);
+    window.location.href = 'login.html';
+  });
+
+  // Auth
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    currentUser = user;
+    // Verify student profile and enrollment
+    const profileSnap = await getDoc(doc(db, 'students', user.uid, 'profile', 'info'));
+    if (!profileSnap.exists()) {
+      await signOut(auth);
+      showToast('هذا الحساب ليس حساب طالب');
+      setTimeout(()=> window.location.href = 'login.html', 2000);
+      return;
+    }
+    // Check enrollment
+    const enrollmentSnap = await getDoc(doc(db, 'students', user.uid, 'courses', courseId));
+    if (!enrollmentSnap.exists()) {
+      showToast('أنت غير مسجل في هذا الكورس');
+      setTimeout(()=> window.location.href = 'my-courses.html', 2000);
+      return;
+    }
+    currentCourseData = enrollmentSnap.data();
+    completedLessons = currentCourseData.completedLessons || {};
+    loadCourseDetails();
+  });
+
+  async function loadCourseDetails() {
+    try {
+      // Fetch course info from teacher
+      const courseDoc = await getDoc(doc(db, 'teachers', teacherId, 'courses', courseId));
+      const courseData = courseDoc.exists() ? courseDoc.data() : null;
+      if (courseData) {
+        // Merge with enrollment data
+        currentCourseData = { ...currentCourseData, ...courseData };
+      }
+      renderCourseInfo();
+
+      // Fetch lessons
+      const lessonsQuery = query(collection(db, 'teachers', teacherId, 'lessons'), where('courseId', '==', courseId));
+      const lessonsSnap = await getDocs(lessonsQuery);
+      allLessons = [];
+      lessonsSnap.forEach(doc => allLessons.push({ id: doc.id, ...doc.data() }));
+      totalLessons = allLessons.length;
+      renderLessons();
+      updateProgressDisplay();
+    } catch (err) {
+      console.error(err);
+      showToast('حدث خطأ في تحميل البيانات');
+    }
+  }
+
+  function renderCourseInfo() {
+    const name = currentCourseData.name || (html.lang==='ar'?'كورس بدون عنوان':'Untitled Course');
+    const desc = currentCourseData.description || (html.lang==='ar'?'لا يوجد وصف':'No description');
+    courseInfo.innerHTML = `
+      <h2 class="course-title">${name}</h2>
+      <p class="course-desc">${desc}</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:${calcProgress()}%"></div>
+      </div>
+      <div class="progress-text">
+        <span>${calcProgress()}% ${html.lang==='ar'?'مكتمل':'Complete'}</span>
+        <span>${Object.keys(completedLessons).length}/${totalLessons} ${html.lang==='ar'?'دروس مكتملة':'completed lessons'}</span>
+      </div>
+    `;
+  }
+
+  function calcProgress() {
+    if (totalLessons === 0) return 0;
+    return Math.round((Object.keys(completedLessons).length / totalLessons) * 100);
+  }
+
+  function renderLessons() {
+    if (allLessons.length === 0) {
+      lessonList.innerHTML = '';
+      lessonsEmpty.style.display = 'block';
+      return;
+    }
+    lessonsEmpty.style.display = 'none';
+    lessonList.innerHTML = allLessons.map(lesson => {
+      const isWatched = completedLessons[lesson.id] === true;
+      const mediaType = lesson.mediaType || (lesson.videoUrl ? 'video' : 'pdf');
+      const icon = mediaType === 'video' ? 'fa-video' : 'fa-file-pdf';
+      const typeLabel = mediaType === 'video' ? (html.lang==='ar'?'فيديو':'Video') : 'PDF';
+      return `
+        <div class="lesson-item">
+          <div class="lesson-icon"><i class="fas ${icon}"></i></div>
+          <div class="lesson-info">
+            <div class="lesson-name">${lesson.title || (html.lang==='ar'?'درس بدون عنوان':'Untitled Lesson')}</div>
+            <div class="lesson-type">${typeLabel}</div>
+          </div>
+          <div class="lesson-actions">
+            ${isWatched 
+              ? `<span class="watched-badge"><i class="fas fa-check-circle"></i> ${html.lang==='ar'?'تمت المشاهدة':'Watched'}</span>`
+              : `<button class="btn btn-primary btn-sm open-lesson" data-lesson-id="${lesson.id}" data-lesson-title="${lesson.title||''}" data-media-type="${mediaType}" data-media-url="${lesson.videoUrl || lesson.pdfUrl || ''}"><i class="fas fa-play"></i> ${html.lang==='ar'?'مشاهدة':'Watch'}</button>
+                 <button class="btn btn-outline btn-sm mark-watched" data-lesson-id="${lesson.id}" ${isWatched?'disabled':''}><i class="fas fa-check"></i></button>`
+            }
+          </div>
+        </div>
+      `;
+    });
+
+    // Add event listeners
+    document.querySelectorAll('.open-lesson').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lessonId = btn.dataset.lessonId;
+        const lessonTitle = btn.dataset.lessonTitle;
+        const mediaType = btn.dataset.mediaType;
+        const mediaUrl = btn.dataset.mediaUrl;
+        openMediaModal(lessonId, lessonTitle, mediaType, mediaUrl);
+      });
+    });
+
+    document.querySelectorAll('.mark-watched').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const lessonId = btn.dataset.lessonId;
+        await markLessonWatched(lessonId);
+      });
+    });
+  }
+
+  function openMediaModal(lessonId, title, mediaType, url) {
+    modalLessonTitle.textContent = title || (html.lang==='ar'?'الدرس':'Lesson');
+    if (mediaType === 'video') {
+      mediaContainer.innerHTML = `<video id="lessonVideo" controls src="${url}" autoplay></video>`;
+      const video = document.getElementById('lessonVideo');
+      video.addEventListener('ended', async () => {
+        // Auto mark as watched when video ends
+        if (!completedLessons[lessonId]) {
+          await markLessonWatched(lessonId);
+          // Update UI button if needed, but since modal is open, we can just update badge
+          updateLessonStatus(lessonId);
+        }
+      });
+    } else {
+      mediaContainer.innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
+      // No auto-watch for PDF, user must click button
+    }
+    mediaModal.classList.add('active');
+    // Store current lesson id for auto-watch from video
+    mediaModal.dataset.currentLessonId = lessonId;
+  }
+
+  closeModal.addEventListener('click', () => {
+    mediaModal.classList.remove('active');
+    mediaContainer.innerHTML = '';
+    // Remove video event listener by clearing innerHTML
+  });
+
+  mediaModal.addEventListener('click', (e) => {
+    if (e.target === mediaModal) {
+      mediaModal.classList.remove('active');
+      mediaContainer.innerHTML = '';
+    }
+  });
+
+  async function markLessonWatched(lessonId) {
+    if (completedLessons[lessonId]) return; // already watched
+    try {
+      const studentCourseRef = doc(db, 'students', currentUser.uid, 'courses', courseId);
+      // Update completedLessons map
+      const newCompleted = { ...completedLessons, [lessonId]: true };
+      const newProgress = Math.round((Object.keys(newCompleted).length / totalLessons) * 100);
+      await updateDoc(studentCourseRef, {
+        [`completedLessons.${lessonId}`]: true,
+        progress: newProgress
+      });
+      completedLessons = newCompleted;
+      showToast(html.lang==='ar'?'تم تحديث التقدم':'Progress updated', 'success');
+      renderCourseInfo();
+      renderLessons();
+    } catch (err) {
+      console.error(err);
+      showToast('فشل في تحديث التقدم');
+    }
+  }
+
+  function updateLessonStatus(lessonId) {
+    // This is called from video ended event to update UI without full re-render
+    completedLessons[lessonId] = true;
+    renderCourseInfo();
+    renderLessons();
+  }
+
+  function updateProgressDisplay() {
+    // Already handled inside renderCourseInfo
+  }
+
+  // Initial load is triggered by auth state
+</script>
+</body>
+</html>
