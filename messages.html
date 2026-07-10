@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Zentor | الرسائل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2a7de1;
+      --primary-hover: #1a67c4;
+      --primary-light: #e8f1fc;
+      --background: #f4f7fc;
+      --card: #ffffff;
+      --text: #0b1e33;
+      --text-secondary: #5a6d80;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px rgba(0,0,0,0.07);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+      --glass-bg: rgba(255,255,255,0.65);
+      --glass-border: rgba(255,255,255,0.4);
+      --glass-blur: blur(14px);
+      --radius: 16px;
+      --radius-lg: 20px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --sidebar-width: 260px;
+    }
+    .dark {
+      --background: #0b0e14;
+      --card: #1a1f2b;
+      --text: #eef2f6;
+      --text-secondary: #9aa4b2;
+      --border: #2a3140;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow: 0 4px 6px rgba(0,0,0,0.3);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+      --glass-bg: rgba(26,31,43,0.7);
+      --glass-border: rgba(255,255,255,0.08);
+      --primary-light: #1a2b44;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0; bottom: 0;
+      width: var(--sidebar-width);
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-right: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+      padding: 1.5rem 1rem;
+      transition: transform var(--transition);
+    }
+    [dir="rtl"] .sidebar { right: 0; border-right: none; border-left: 1px solid var(--glass-border); }
+    [dir="ltr"] .sidebar { left: 0; }
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 2rem;
+      text-decoration: none;
+    }
+    .sidebar-logo i { font-size: 1.6rem; }
+    .sidebar-nav { flex:1; display:flex; flex-direction: column; gap: 0.4rem; }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all var(--transition);
+    }
+    .sidebar-link i { width: 20px; text-align: center; }
+    .sidebar-link:hover { background: var(--primary-light); color: var(--primary); }
+    .sidebar-link.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(42,125,225,0.3); }
+    .sidebar-footer { margin-top: auto; }
+    .logout-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .logout-btn:hover { background: #fee2e2; color: #dc2626; border-color: #fecaca; }
+
+    .main {
+      flex: 1;
+      margin-right: var(--sidebar-width);
+      padding: 1.5rem;
+      transition: margin var(--transition);
+    }
+    [dir="ltr"] .main { margin-right: 0; margin-left: var(--sidebar-width); }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .hamburger {
+      display: none;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .page-title { font-size: 1.8rem; font-weight: 800; }
+    .top-actions { display: flex; gap: 0.5rem; }
+    .action-btn {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 1rem;
+    }
+    .action-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+    .sidebar-overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.4); z-index: 999; }
+
+    .messages-layout {
+      display: flex;
+      gap: 1rem;
+      height: calc(100vh - 120px);
+      min-height: 500px;
+    }
+    .conversations-panel {
+      width: 320px;
+      flex-shrink: 0;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .conversations-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+    }
+    .conversation-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      cursor: pointer;
+      transition: background var(--transition);
+      border-bottom: 1px solid var(--border);
+    }
+    .conversation-item:hover, .conversation-item.active {
+      background: var(--primary-light);
+    }
+    .avatar-small {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .conv-info { flex:1; min-width:0; }
+    .conv-name { font-weight: 600; }
+    .conv-last { color: var(--text-secondary); font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chat-panel {
+      flex:1;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+    }
+    .chat-messages {
+      flex:1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .message-bubble {
+      max-width: 70%;
+      padding: 0.6rem 1rem;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+    .message-sent {
+      background: var(--primary);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .message-received {
+      background: var(--border);
+      color: var(--text);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .chat-input-area {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+    }
+    .chat-input-area input {
+      flex:1;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      background: var(--background);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+    }
+    .chat-input-area input:focus { border-color: var(--primary); outline: none; }
+    .btn-send {
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .btn-send:hover { background: var(--primary-hover); }
+    .no-chat-selected {
+      flex:1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+    }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.9rem 1.8rem;
+      border-radius: 50px;
+      box-shadow: var(--shadow-lg);
+      z-index: 9999;
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      max-width: 90vw;
+    }
+    .toast-error { background: #fee2e2; color: #991b1b; border:1px solid #fecaca; }
+    .toast-success { background: #dcfce7; color: #166534; border:1px solid #bbf7d0; }
+    @keyframes slideUp {
+      from { opacity:0; transform: translateX(-50%) translateY(20px); }
+      to { opacity:1; transform: translateX(-50%) translateY(0); }
+    }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(100%); }
+      [dir="ltr"] .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin: 0; }
+      .hamburger { display: flex; }
+      .sidebar-overlay.active { display: block; }
+      .messages-layout { flex-direction: column; height: auto; }
+      .conversations-panel { width: 100%; max-height: 200px; }
+      .chat-panel { flex:1; }
+      .no-chat-selected { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+<div class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-logo"><i class="fas fa-graduation-cap"></i> Zentor</a>
+  <nav class="sidebar-nav">
+    <a href="dashboard.html" class="sidebar-link"><i class="fas fa-th-large"></i> لوحة التحكم</a>
+    <a href="my-courses.html" class="sidebar-link"><i class="fas fa-book-open"></i> كورساتي</a>
+    <a href="browse-teachers.html" class="sidebar-link"><i class="fas fa-chalkboard-teacher"></i> المعلمين</a>
+    <a href="assignments.html" class="sidebar-link"><i class="fas fa-tasks"></i> الواجبات</a>
+    <a href="messages.html" class="sidebar-link active"><i class="fas fa-comments"></i> الرسائل</a>
+    <a href="profile.html" class="sidebar-link"><i class="fas fa-user-circle"></i> الملف الشخصي</a>
+    <a href="settings.html" class="sidebar-link"><i class="fas fa-cog"></i> الإعدادات</a>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+  </div>
+</div>
+<div class="sidebar-overlay" id="overlay"></div>
+
+<div class="main">
+  <div class="topbar">
+    <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    <h1 class="page-title">الرسائل</h1>
+    <div class="top-actions">
+      <button class="action-btn" id="langToggle" title="English"><i class="fas fa-globe"></i></button>
+      <button class="action-btn" id="darkToggle" title="الوضع الليلي"><i class="fas fa-moon"></i></button>
+    </div>
+  </div>
+
+  <div class="messages-layout">
+    <div class="conversations-panel" id="conversationsPanel">
+      <div class="conversations-header" id="convHeader">المحادثات</div>
+      <div id="conversationList"></div>
+    </div>
+    <div class="chat-panel" id="chatPanel">
+      <div class="chat-header" id="chatHeader" style="display:none;"></div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input-area" id="chatInputArea" style="display:none;">
+        <input type="text" id="messageInput" placeholder="اكتب رسالتك...">
+        <button class="btn-send" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+      </div>
+      <div class="no-chat-selected" id="noChatSelected">
+        <p>اختر محادثة من القائمة</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+  import { 
+    getFirestore, 
+    collection, 
+    query, 
+    where, 
+    orderBy, 
+    getDocs, 
+    addDoc, 
+    serverTimestamp,
+    doc, 
+    getDoc,
+    onSnapshot,
+    limit 
+  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBOd-cHm8J84BMwdlP8a3zOVlK8sboUFj0",
+    authDomain: "zentor-caaf1.firebaseapp.com",
+    projectId: "zentor-caaf1",
+    storageBucket: "zentor-caaf1.firebasestorage.app",
+    messagingSenderId: "681267238383",
+    appId: "1:681267238383:web:0c93fb405bfd6b5903921a",
+    measurementId: "G-X80GNJHMS5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const html = document.documentElement;
+  const darkToggle = document.getElementById('darkToggle');
+  const langToggle = document.getElementById('langToggle');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const hamburger = document.getElementById('hamburger');
+  const conversationList = document.getElementById('conversationList');
+  const chatHeader = document.getElementById('chatHeader');
+  const chatMessages = document.getElementById('chatMessages');
+  const chatInputArea = document.getElementById('chatInputArea');
+  const noChatSelected = document.getElementById('noChatSelected');
+  const messageInput = document.getElementById('messageInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const convHeader = document.getElementById('convHeader');
+  const pageTitle = document.querySelector('.page-title');
+  const toast = document.getElementById('toast');
+
+  let currentUser = null;
+  let allMessages = []; // merged messages
+  let conversationsMap = new Map(); // teacherId -> { teacherName, lastMessageText, lastMessageTime }
+  let activeTeacherId = null;
+  let unsubscribes = [];
+
+  function showToast(msg, type='error') {
+    toast.textContent = msg;
+    toast.className = `toast toast-${type}`;
+    toast.style.display = 'flex';
+    clearTimeout(window._t);
+    window._t = setTimeout(() => toast.style.display = 'none', 4000);
+  }
+
+  // Dark mode
+  function setDark(on) {
+    html.classList.toggle('dark', on);
+    darkToggle.innerHTML = on ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    localStorage.setItem('zentor_dark_mode', on);
+  }
+  darkToggle.addEventListener('click', ()=> setDark(!html.classList.contains('dark')));
+  setDark(localStorage.getItem('zentor_dark_mode') === 'true');
+
+  // Language
+  function setLang(lang) {
+    html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    html.lang = lang;
+    langToggle.title = lang === 'ar' ? 'English' : 'العربية';
+    pageTitle.textContent = lang === 'ar' ? 'الرسائل' : 'Messages';
+    convHeader.textContent = lang === 'ar' ? 'المحادثات' : 'Conversations';
+    messageInput.placeholder = lang === 'ar' ? 'اكتب رسالتك...' : 'Type your message...';
+    noChatSelected.querySelector('p').textContent = lang === 'ar' ? 'اختر محادثة من القائمة' : 'Select a conversation';
+    document.getElementById('logoutBtn').innerHTML = lang === 'ar' ? '<i class="fas fa-sign-out-alt"></i> تسجيل الخروج' : '<i class="fas fa-sign-out-alt"></i> Logout';
+    const links = document.querySelectorAll('.sidebar-link');
+    const arabicLabels = ['لوحة التحكم','كورساتي','المعلمين','الواجبات','الرسائل','الملف الشخصي','الإعدادات'];
+    const englishLabels = ['Dashboard','My Courses','Teachers','Assignments','Messages','Profile','Settings'];
+    const icons = ['fa-th-large','fa-book-open','fa-chalkboard-teacher','fa-tasks','fa-comments','fa-user-circle','fa-cog'];
+    links.forEach((link, i) => {
+      link.innerHTML = `<i class="fas ${icons[i]}"></i> ${lang === 'ar' ? arabicLabels[i] : englishLabels[i]}`;
+    });
+    localStorage.setItem('zentor_lang', lang);
+    // Re-render conversations if data loaded
+    if (currentUser) renderConversations();
+  }
+  langToggle.addEventListener('click', ()=> setLang(html.lang === 'ar' ? 'en' : 'ar'));
+  setLang(localStorage.getItem('zentor_lang') || 'ar');
+
+  // Sidebar
+  hamburger.addEventListener('click', ()=>{
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+  });
+  overlay.addEventListener('click', ()=>{
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+  });
+
+  // Logout
+  document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+    await signOut(auth);
+    window.location.href = 'login.html';
+  });
+
+  // Auth
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    currentUser = user;
+    const profileSnap = await getDoc(doc(db, 'students', user.uid, 'profile', 'info'));
+    if (!profileSnap.exists()) {
+      await signOut(auth);
+      showToast('هذا الحساب ليس حساب طالب');
+      setTimeout(()=> window.location.href = 'login.html', 2000);
+      return;
+    }
+    loadMessagesAndConversations();
+  });
+
+  async function loadMessagesAndConversations() {
+    try {
+      const uid = currentUser.uid;
+      // Fetch sent messages
+      const sentQuery = query(collection(db, 'messages'), where('senderId', '==', uid), orderBy('timestamp', 'desc'));
+      const receivedQuery = query(collection(db, 'messages'), where('receiverId', '==', uid), orderBy('timestamp', 'desc'));
+      
+      const [sentSnap, receivedSnap] = await Promise.all([
+        getDocs(sentQuery),
+        getDocs(receivedQuery)
+      ]);
+
+      allMessages = [];
+      sentSnap.forEach(doc => allMessages.push({ id: doc.id, ...doc.data() }));
+      receivedSnap.forEach(doc => allMessages.push({ id: doc.id, ...doc.data() }));
+
+      // Build conversations map (group by other party)
+      conversationsMap.clear();
+      const teacherIds = new Set();
+      allMessages.forEach(msg => {
+        const otherId = msg.senderId === uid ? msg.receiverId : msg.senderId;
+        if (otherId) teacherIds.add(otherId);
+      });
+
+      // Fetch teacher names
+      for (const tid of teacherIds) {
+        let teacherName = tid.substring(0,8)+'...';
+        try {
+          const teacherProfile = await getDoc(doc(db, 'teachers', tid, 'settings', 'profile'));
+          if (teacherProfile.exists()) {
+            teacherName = teacherProfile.data().name || teacherName;
+          }
+        } catch(e) {}
+        // Find last message for this teacher
+        const msgs = allMessages.filter(m => (m.senderId === uid && m.receiverId === tid) || (m.receiverId === uid && m.senderId === tid));
+        msgs.sort((a,b) => (b.timestamp?.toMillis()||0) - (a.timestamp?.toMillis()||0));
+        const lastMsg = msgs[0];
+        conversationsMap.set(tid, {
+          name: teacherName,
+          lastText: lastMsg?.text || '',
+          lastTime: lastMsg?.timestamp?.toDate() || new Date()
+        });
+      }
+
+      renderConversations();
+    } catch (err) {
+      console.error(err);
+      showToast('حدث خطأ في تحميل المحادثات');
+    }
+  }
+
+  function renderConversations() {
+    const isArabic = html.lang === 'ar';
+    const entries = Array.from(conversationsMap.entries());
+    if (entries.length === 0) {
+      conversationList.innerHTML = '<div class="empty-state"><i class="fas fa-comments"></i><p>'+ (isArabic ? 'لا توجد محادثات' : 'No conversations') +'</p></div>';
+      return;
+    }
+    conversationList.innerHTML = entries.map(([tid, data]) => `
+      <div class="conversation-item" data-teacher-id="${tid}">
+        <div class="avatar-small">${data.name.charAt(0).toUpperCase()}</div>
+        <div class="conv-info">
+          <div class="conv-name">${data.name}</div>
+          <div class="conv-last">${data.lastText}</div>
+        </div>
+        <div class="conv-time" style="font-size:0.75rem;color:var(--text-secondary);">${formatTime(data.lastTime)}</div>
+      </div>
+    `).join('');
+
+    // Click handlers
+    document.querySelectorAll('.conversation-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const tid = item.dataset.teacherId;
+        openChat(tid);
+      });
+    });
+  }
+
+  function formatTime(date) {
+    const now = new Date();
+    const diff = now - date;
+    const mins = Math.floor(diff/60000);
+    if (mins < 1) return html.lang==='ar' ? 'الآن' : 'now';
+    if (mins < 60) return mins + ' د';
+    const hours = Math.floor(mins/60);
+    if (hours < 24) return hours + ' س';
+    return date.toLocaleDateString(html.lang==='ar'?'ar-EG':'en-US', { month:'short', day:'numeric' });
+  }
+
+  function openChat(teacherId) {
+    // Unsubscribe previous listeners
+    unsubscribes.forEach(fn => fn());
+    unsubscribes = [];
+
+    activeTeacherId = teacherId;
+    noChatSelected.style.display = 'none';
+    chatHeader.style.display = 'flex';
+    chatInputArea.style.display = 'flex';
+    chatMessages.innerHTML = '';
+
+    const teacherName = conversationsMap.get(teacherId)?.name || teacherId.substring(0,8)+'...';
+    chatHeader.innerHTML = `<div class="avatar-small">${teacherName.charAt(0).toUpperCase()}</div><div>${teacherName}</div>`;
+
+    // Highlight active conversation
+    document.querySelectorAll('.conversation-item').forEach(el => el.classList.remove('active'));
+    const activeItem = document.querySelector(`.conversation-item[data-teacher-id="${teacherId}"]`);
+    if (activeItem) activeItem.classList.add('active');
+
+    // Set up real-time listeners for messages between current user and teacher
+    const uid = currentUser.uid;
+    const sentQuery = query(collection(db, 'messages'), where('senderId', '==', uid), where('receiverId', '==', teacherId), orderBy('timestamp', 'asc'));
+    const receivedQuery = query(collection(db, 'messages'), where('senderId', '==', teacherId), where('receiverId', '==', uid), orderBy('timestamp', 'asc'));
+
+    const unsubSent = onSnapshot(sentQuery, (snapshot) => {
+      refreshChatMessages();
+    }, (error) => {
+      console.error(error);
+    });
+
+    const unsubReceived = onSnapshot(receivedQuery, (snapshot) => {
+      refreshChatMessages();
+    }, (error) => {
+      console.error(error);
+    });
+
+    unsubscribes.push(unsubSent, unsubReceived);
+    refreshChatMessages();
+  }
+
+  async function refreshChatMessages() {
+    if (!activeTeacherId) return;
+    const uid = currentUser.uid;
+    const tid = activeTeacherId;
+
+    const sentQuery = query(collection(db, 'messages'), where('senderId', '==', uid), where('receiverId', '==', tid), orderBy('timestamp', 'asc'));
+    const receivedQuery = query(collection(db, 'messages'), where('senderId', '==', tid), where('receiverId', '==', uid), orderBy('timestamp', 'asc'));
+
+    const [sentSnap, receivedSnap] = await Promise.all([
+      getDocs(sentQuery),
+      getDocs(receivedQuery)
+    ]);
+
+    const messages = [];
+    sentSnap.forEach(doc => messages.push({ id: doc.id, sent: true, ...doc.data() }));
+    receivedSnap.forEach(doc => messages.push({ id: doc.id, sent: false, ...doc.data() }));
+
+    // Sort by timestamp
+    messages.sort((a,b) => (a.timestamp?.toMillis()||0) - (b.timestamp?.toMillis()||0));
+
+    // Render
+    chatMessages.innerHTML = messages.map(msg => {
+      const time = msg.timestamp?.toDate ? msg.timestamp.toDate() : new Date();
+      const timeStr = time.toLocaleTimeString(html.lang==='ar'?'ar-EG':'en-US', { hour:'2-digit', minute:'2-digit' });
+      const bubbleClass = msg.sent ? 'message-sent' : 'message-received';
+      return `<div class="message-bubble ${bubbleClass}"><div>${msg.text}</div><div style="font-size:0.7rem; margin-top:0.2rem; opacity:0.7;">${timeStr}</div></div>`;
+    }).join('');
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  // Send message
+  sendBtn.addEventListener('click', sendMessage);
+  messageInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  async function sendMessage() {
+    const text = messageInput.value.trim();
+    if (!text || !activeTeacherId) return;
+
+    try {
+      await addDoc(collection(db, 'messages'), {
+        senderId: currentUser.uid,
+        receiverId: activeTeacherId,
+        text: text,
+        timestamp: serverTimestamp()
+      });
+      messageInput.value = '';
+      // The listener will update the view
+    } catch (error) {
+      console.error(error);
+      showToast('فشل إرسال الرسالة');
+    }
+  }
+</script>
+</body>
+</html>
