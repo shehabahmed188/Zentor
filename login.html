@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Zentor - تسجيل الدخول / إنشاء حساب</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2a7de1;
+      --primary-hover: #1a67c4;
+      --primary-light: #e8f1fc;
+      --background: #f4f7fc;
+      --card: #ffffff;
+      --text: #0b1e33;
+      --text-secondary: #5a6d80;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px rgba(0,0,0,0.07);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+      --glass-bg: rgba(255,255,255,0.7);
+      --glass-border: rgba(255,255,255,0.5);
+      --glass-blur: blur(12px);
+      --radius: 16px;
+      --radius-xl: 24px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --error: #dc2626;
+      --success: #16a34a;
+    }
+
+    .dark {
+      --background: #0b0e14;
+      --card: #1a1f2b;
+      --text: #eef2f6;
+      --text-secondary: #9aa4b2;
+      --border: #2a3140;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow: 0 4px 6px rgba(0,0,0,0.3);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+      --glass-bg: rgba(26,31,43,0.7);
+      --glass-border: rgba(255,255,255,0.08);
+      --primary-light: #1a2b44;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      transition: background var(--transition), color var(--transition);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .bg-decoration {
+      position: fixed;
+      top: -100px;
+      right: -100px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(42,125,225,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-decoration-2 {
+      top: auto;
+      bottom: -100px;
+      right: auto;
+      left: -100px;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(42,125,225,0.07) 0%, transparent 70%);
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 440px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-card {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--glass-border);
+      padding: 2.5rem 2rem;
+      box-shadow: var(--shadow-lg);
+      transition: all var(--transition);
+    }
+
+    .dark .auth-card {
+      background: var(--card);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .logo-link i {
+      font-size: 1.6rem;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 0.75rem;
+      background: none;
+      border: none;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all var(--transition);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .form-panel {
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .form-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      transition: all var(--transition);
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(42,125,225,0.1);
+    }
+
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+
+    [dir="rtl"] .input-icon {
+      right: 1rem;
+    }
+
+    [dir="ltr"] .input-icon {
+      left: 1rem;
+    }
+
+    [dir="rtl"] input {
+      padding-right: 2.8rem;
+    }
+
+    [dir="ltr"] input {
+      padding-left: 2.8rem;
+    }
+
+    select {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: '\f078';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+
+    [dir="rtl"] .select-wrapper::after {
+      left: 1rem;
+    }
+
+    [dir="ltr"] .select-wrapper::after {
+      right: 1rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.95rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(42,125,225,0.3);
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(42,125,225,0.4);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .btn.loading .btn-text { display: none; }
+    .btn.loading .spinner { display: inline-block; }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .auth-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Top right controls */
+    .top-controls {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10;
+    }
+
+    [dir="ltr"] .top-controls {
+      right: auto;
+      left: 1rem;
+    }
+
+    .ctrl-btn {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 1rem;
+    }
+
+    .ctrl-btn:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.9rem 1.8rem;
+      border-radius: 50px;
+      box-shadow: var(--shadow-lg);
+      z-index: 9999;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: slideUp 0.4s ease-out;
+      max-width: 90vw;
+      font-size: 0.95rem;
+    }
+
+    .toast-error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .toast-success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    .back-link {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      z-index: 10;
+      transition: color var(--transition);
+    }
+
+    [dir="ltr"] .back-link {
+      left: auto;
+      right: 1rem;
+    }
+
+    .back-link:hover {
+      color: var(--primary);
+    }
+
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-decoration"></div>
+  <div class="bg-decoration bg-decoration-2"></div>
+
+  <a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> الرئيسية</a>
+
+  <div class="top-controls">
+    <button class="ctrl-btn" id="langToggle" title="English / العربية"><i class="fas fa-globe"></i></button>
+    <button class="ctrl-btn" id="darkToggle" title="الوضع الليلي"><i class="fas fa-moon"></i></button>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <a href="index.html" class="logo-link">
+          <i class="fas fa-graduation-cap"></i> Zentor
+        </a>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="login">تسجيل الدخول</button>
+        <button class="tab-btn" data-tab="register">إنشاء حساب</button>
+      </div>
+
+      <!-- Login Form -->
+      <div class="form-panel active" id="login-panel">
+        <form id="login-form" novalidate>
+          <div class="form-group">
+            <label for="login-email">البريد الإلكتروني</label>
+            <div class="input-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="login-email" placeholder="example@email.com" required autocomplete="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="login-password">كلمة المرور</label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="login-password" placeholder="••••••••" required minlength="6" autocomplete="current-password">
+            </div>
+          </div>
+          <button type="submit" class="btn" id="login-btn">
+            <span class="btn-text"><i class="fas fa-sign-in-alt"></i> دخول</span>
+            <span class="spinner"></span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div class="form-panel" id="register-panel">
+        <form id="register-form" novalidate>
+          <div class="form-group">
+            <label for="reg-name">الاسم الكامل</label>
+            <div class="input-wrapper">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" id="reg-name" placeholder="محمد أحمد" required autocomplete="name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reg-email">البريد الإلكتروني</label>
+            <div class="input-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="reg-email" placeholder="example@email.com" required autocomplete="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reg-password">كلمة المرور</label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="reg-password" placeholder="••••••••" required minlength="6" autocomplete="new-password">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reg-grade">الصف الدراسي</label>
+            <div class="select-wrapper">
+              <select id="reg-grade" required>
+                <option value="" disabled selected>اختر الصف</option>
+                <option value="1">الصف الأول</option>
+                <option value="2">الصف الثاني</option>
+                <option value="3">الصف الثالث</option>
+                <option value="4">الصف الرابع</option>
+                <option value="5">الصف الخامس</option>
+                <option value="6">الصف السادس</option>
+                <option value="7">الصف السابع</option>
+                <option value="8">الصف الثامن</option>
+                <option value="9">الصف التاسع</option>
+                <option value="10">الصف العاشر</option>
+                <option value="11">الصف الحادي عشر</option>
+                <option value="12">الصف الثاني عشر</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn" id="register-btn">
+            <span class="btn-text"><i class="fas fa-user-plus"></i> إنشاء حساب</span>
+            <span class="spinner"></span>
+          </button>
+        </form>
+      </div>
+
+      <div class="auth-footer" id="auth-footer">
+        ليس لديك حساب؟ <a href="#" id="switch-to-register">إنشاء حساب جديد</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" style="display:none;"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      createUserWithEmailAndPassword, 
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      getDoc, 
+      setDoc, 
+      serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBOd-cHm8J84BMwdlP8a3zOVlK8sboUFj0",
+      authDomain: "zentor-caaf1.firebaseapp.com",
+      projectId: "zentor-caaf1",
+      storageBucket: "zentor-caaf1.firebasestorage.app",
+      messagingSenderId: "681267238383",
+      appId: "1:681267238383:web:0c93fb405bfd6b5903921a",
+      measurementId: "G-X80GNJHMS5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // DOM
+    const html = document.documentElement;
+    const darkToggle = document.getElementById('darkToggle');
+    const langToggle = document.getElementById('langToggle');
+    const toastEl = document.getElementById('toast');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.form-panel');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const authFooter = document.getElementById('auth-footer');
+    const switchToRegister = document.getElementById('switch-to-register');
+
+    let currentTab = 'login';
+
+    // Toast
+    function showToast(msg, type = 'error') {
+      toastEl.textContent = msg;
+      toastEl.className = `toast toast-${type}`;
+      toastEl.style.display = 'flex';
+      clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => {
+        toastEl.style.display = 'none';
+      }, 4000);
+    }
+
+    // Dark mode
+    function applyDarkMode(isDark) {
+      html.classList.toggle('dark', isDark);
+      darkToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      darkToggle.title = isDark ? 'الوضع الفاتح' : 'الوضع الليلي';
+    }
+
+    const savedDark = localStorage.getItem('zentor_dark_mode') === 'true';
+    applyDarkMode(savedDark);
+
+    darkToggle.addEventListener('click', () => {
+      const isDark = !html.classList.contains('dark');
+      applyDarkMode(isDark);
+      localStorage.setItem('zentor_dark_mode', isDark);
+    });
+
+    // Language
+    function setLang(lang) {
+      if (lang === 'en') {
+        html.dir = 'ltr';
+        html.lang = 'en';
+        langToggle.title = 'العربية';
+        document.querySelector('.back-link').innerHTML = '<i class="fas fa-arrow-left"></i> Home';
+        document.querySelector('.logo-link').innerHTML = '<i class="fas fa-graduation-cap"></i> Zentor';
+        tabBtns[0].textContent = 'Login';
+        tabBtns[1].textContent = 'Register';
+        document.querySelector('label[for="login-email"]').textContent = 'Email';
+        document.querySelector('label[for="login-password"]').textContent = 'Password';
+        document.querySelector('#login-email').placeholder = 'example@email.com';
+        document.querySelector('#login-password').placeholder = '••••••••';
+        loginBtn.querySelector('.btn-text').innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        document.querySelector('label[for="reg-name"]').textContent = 'Full Name';
+        document.querySelector('label[for="reg-email"]').textContent = 'Email';
+        document.querySelector('label[for="reg-password"]').textContent = 'Password';
+        document.querySelector('label[for="reg-grade"]').textContent = 'Grade';
+        document.querySelector('#reg-name').placeholder = 'John Doe';
+        document.querySelector('#reg-email').placeholder = 'example@email.com';
+        document.querySelector('#reg-password').placeholder = '••••••••';
+        registerBtn.querySelector('.btn-text').innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+        // Update grade options
+        const gradeSelect = document.getElementById('reg-grade');
+        const grades = ['Select Grade','Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'];
+        for (let i=0; i<gradeSelect.options.length; i++) {
+          gradeSelect.options[i].textContent = grades[i];
+        }
+        authFooter.innerHTML = `Don't have an account? <a href="#" id="switch-to-register">Create one</a>`;
+        document.getElementById('switch-to-register').addEventListener('click', (e) => { e.preventDefault(); switchTab('register'); });
+      } else {
+        html.dir = 'rtl';
+        html.lang = 'ar';
+        langToggle.title = 'English';
+        document.querySelector('.back-link').innerHTML = '<i class="fas fa-arrow-right"></i> الرئيسية';
+        document.querySelector('.logo-link').innerHTML = '<i class="fas fa-graduation-cap"></i> Zentor';
+        tabBtns[0].textContent = 'تسجيل الدخول';
+        tabBtns[1].textContent = 'إنشاء حساب';
+        document.querySelector('label[for="login-email"]').textContent = 'البريد الإلكتروني';
+        document.querySelector('label[for="login-password"]').textContent = 'كلمة المرور';
+        document.querySelector('#login-email').placeholder = 'example@email.com';
+        document.querySelector('#login-password').placeholder = '••••••••';
+        loginBtn.querySelector('.btn-text').innerHTML = '<i class="fas fa-sign-in-alt"></i> دخول';
+        document.querySelector('label[for="reg-name"]').textContent = 'الاسم الكامل';
+        document.querySelector('label[for="reg-email"]').textContent = 'البريد الإلكتروني';
+        document.querySelector('label[for="reg-password"]').textContent = 'كلمة المرور';
+        document.querySelector('label[for="reg-grade"]').textContent = 'الصف الدراسي';
+        document.querySelector('#reg-name').placeholder = 'محمد أحمد';
+        document.querySelector('#reg-email').placeholder = 'example@email.com';
+        document.querySelector('#reg-password').placeholder = '••••••••';
+        registerBtn.querySelector('.btn-text').innerHTML = '<i class="fas fa-user-plus"></i> إنشاء حساب';
+        const gradeSelect = document.getElementById('reg-grade');
+        const gradesAR = ['اختر الصف','الصف الأول','الصف الثاني','الصف الثالث','الصف الرابع','الصف الخامس','الصف السادس','الصف السابع','الصف الثامن','الصف التاسع','الصف العاشر','الصف الحادي عشر','الصف الثاني عشر'];
+        for (let i=0; i<gradeSelect.options.length; i++) {
+          gradeSelect.options[i].textContent = gradesAR[i];
+        }
+        authFooter.innerHTML = `ليس لديك حساب؟ <a href="#" id="switch-to-register">إنشاء حساب جديد</a>`;
+        document.getElementById('switch-to-register').addEventListener('click', (e) => { e.preventDefault(); switchTab('register'); });
+      }
+      localStorage.setItem('zentor_lang', lang);
+    }
+
+    langToggle.addEventListener('click', () => {
+      setLang(html.lang === 'ar' ? 'en' : 'ar');
+    });
+
+    const savedLang = localStorage.getItem('zentor_lang') || 'ar';
+    if (savedLang && savedLang !== html.lang) setLang(savedLang);
+
+    // Tab switching
+    function switchTab(tab) {
+      currentTab = tab;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      if (tab === 'login') {
+        tabBtns[0].classList.add('active');
+        document.getElementById('login-panel').classList.add('active');
+        authFooter.innerHTML = (html.lang === 'en' ? `Don't have an account? <a href="#" id="switch-to-register">Create one</a>` : `ليس لديك حساب؟ <a href="#" id="switch-to-register">إنشاء حساب جديد</a>`);
+        document.getElementById('switch-to-register')?.addEventListener('click', (e) => { e.preventDefault(); switchTab('register'); });
+      } else {
+        tabBtns[1].classList.add('active');
+        document.getElementById('register-panel').classList.add('active');
+        authFooter.innerHTML = (html.lang === 'en' ? `Already have an account? <a href="#" id="switch-to-login">Login</a>` : `لديك حساب بالفعل؟ <a href="#" id="switch-to-login">تسجيل الدخول</a>`);
+        document.getElementById('switch-to-login')?.addEventListener('click', (e) => { e.preventDefault(); switchTab('login'); });
+      }
+    }
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    switchToRegister.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchTab('register');
+    });
+
+    // Loading state
+    function setLoading(btn, loading) {
+      if (loading) {
+        btn.classList.add('loading');
+        btn.disabled = true;
+      } else {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    }
+
+    // Login
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+      if (!email || !password) {
+        showToast(html.lang === 'en' ? 'Please fill all fields' : 'يرجى ملء جميع الحقول');
+        return;
+      }
+      setLoading(loginBtn, true);
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        // Verify if student profile exists
+        const studentDoc = await getDoc(doc(db, 'students', user.uid, 'profile', 'info'));
+        if (!studentDoc.exists()) {
+          await signOut(auth);
+          showToast('هذا الحساب ليس حساب طالب');
+          setLoading(loginBtn, false);
+          return;
+        }
+        showToast(html.lang === 'en' ? 'Login successful! Redirecting...' : 'تم تسجيل الدخول بنجاح! جاري التوجيه...', 'success');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1000);
+      } catch (error) {
+        let msg = error.message;
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+          msg = html.lang === 'en' ? 'Incorrect email or password' : 'بريد أو كلمة مرور غير صحيحة';
+        } else if (error.code === 'auth/invalid-email') {
+          msg = html.lang === 'en' ? 'Invalid email' : 'بريد إلكتروني غير صالح';
+        }
+        showToast(msg);
+      } finally {
+        setLoading(loginBtn, false);
+      }
+    });
+
+    // Register
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value.trim();
+      const grade = document.getElementById('reg-grade').value;
+      if (!name || !email || !password || !grade) {
+        showToast(html.lang === 'en' ? 'Please fill all fields' : 'يرجى ملء جميع الحقول');
+        return;
+      }
+      if (password.length < 6) {
+        showToast(html.lang === 'en' ? 'Password must be at least 6 characters' : 'كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+        return;
+      }
+      setLoading(registerBtn, true);
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        // Save student profile
+        await setDoc(doc(db, 'students', user.uid, 'profile', 'info'), {
+          name: name,
+          email: email,
+          grade: grade,
+          createdAt: serverTimestamp()
+        });
+        showToast(html.lang === 'en' ? 'Account created successfully! Redirecting...' : 'تم إنشاء الحساب بنجاح! جاري التوجيه...', 'success');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1000);
+      } catch (error) {
+        let msg = error.message;
+        if (error.code === 'auth/email-already-in-use') {
+          msg = html.lang === 'en' ? 'Email already in use' : 'البريد الإلكتروني مستخدم بالفعل';
+        } else if (error.code === 'auth/weak-password') {
+          msg = html.lang === 'en' ? 'Password is too weak' : 'كلمة المرور ضعيفة';
+        }
+        showToast(msg);
+      } finally {
+        setLoading(registerBtn, false);
+      }
+    });
+
+    // Redirect if already logged in as student
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const studentDoc = await getDoc(doc(db, 'students', user.uid, 'profile', 'info'));
+        if (studentDoc.exists()) {
+          // Already logged in as student, go to dashboard
+          window.location.href = 'dashboard.html';
+        } else {
+          // Signed in but not a student, sign out and stay
+          await signOut(auth);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
