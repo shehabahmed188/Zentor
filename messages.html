@@ -386,14 +386,12 @@
     collection, 
     query, 
     where, 
-    orderBy, 
     getDocs, 
     addDoc, 
     serverTimestamp,
     doc, 
     getDoc,
-    onSnapshot,
-    limit 
+    onSnapshot
   } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -428,8 +426,7 @@
   const toast = document.getElementById('toast');
 
   let currentUser = null;
-  let allMessages = []; // merged messages
-  let conversationsMap = new Map(); // teacherId -> { teacherName, lastMessageText, lastMessageTime }
+  let conversationsMap = new Map(); // teacherId -> { teacherName, lastText, lastTime }
   let activeTeacherId = null;
   let unsubscribes = [];
 
@@ -507,16 +504,16 @@
   async function loadMessagesAndConversations() {
     try {
       const uid = currentUser.uid;
-      // Fetch sent messages
-      const sentQuery = query(collection(db, 'messages'), where('senderId', '==', uid), orderBy('timestamp', 'desc'));
-      const receivedQuery = query(collection(db, 'messages'), where('receiverId', '==', uid), orderBy('timestamp', 'desc'));
+      // Fetch sent and received messages WITHOUT orderBy to avoid composite index requirement
+      const sentQuery = query(collection(db, 'messages'), where('senderId', '==', uid));
+      const receivedQuery = query(collection(db, 'messages'), where('receiverId', '==', uid));
       
       const [sentSnap, receivedSnap] = await Promise.all([
         getDocs(sentQuery),
         getDocs(receivedQuery)
       ]);
 
-      allMessages = [];
+      const allMessages = [];
       sentSnap.forEach(doc => allMessages.push({ id: doc.id, ...doc.data() }));
       receivedSnap.forEach(doc => allMessages.push({ id: doc.id, ...doc.data() }));
 
@@ -539,7 +536,12 @@
         } catch(e) {}
         // Find last message for this teacher
         const msgs = allMessages.filter(m => (m.senderId === uid && m.receiverId === tid) || (m.receiverId === uid && m.senderId === tid));
-        msgs.sort((a,b) => (b.timestamp?.toMillis()||0) - (a.timestamp?.toMillis()||0));
+        // Sort manually descending by timestamp
+        msgs.sort((a, b) => {
+          const aTime = a.timestamp?.toMillis ? a.timestamp.toMillis() : 0;
+          const bTime = b.timestamp?.toMillis ? b.timestamp.toMillis() : 0;
+          return bTime - aTime;
+        });
         const lastMsg = msgs[0];
         conversationsMap.set(tid, {
           name: teacherName,
@@ -612,10 +614,10 @@
     const activeItem = document.querySelector(`.conversation-item[data-teacher-id="${teacherId}"]`);
     if (activeItem) activeItem.classList.add('active');
 
-    // Set up real-time listeners for messages between current user and teacher
     const uid = currentUser.uid;
-    const sentQuery = query(collection(db, 'messages'), where('senderId', '==', uid), where('receiverId', '==', teacherId), orderBy('timestamp', 'asc'));
-    const receivedQuery = query(collection(db, 'messages'), where('senderId', '==', teacherId), where('receiverId', '==', uid), orderBy('timestamp', 'asc'));
+    // Set up real-time listeners without orderBy, we'll sort manually
+    const sentQuery = query(collection(db, 'messages'), where('senderId', '==', uid), where('receiverId', '==', teacherId));
+    const receivedQuery = query(collection(db, 'messages'), where('senderId', '==', teacherId), where('receiverId', '==', uid));
 
     const unsubSent = onSnapshot(sentQuery, (snapshot) => {
       refreshChatMessages();
@@ -638,8 +640,8 @@
     const uid = currentUser.uid;
     const tid = activeTeacherId;
 
-    const sentQuery = query(collection(db, 'messages'), where('senderId', '==', uid), where('receiverId', '==', tid), orderBy('timestamp', 'asc'));
-    const receivedQuery = query(collection(db, 'messages'), where('senderId', '==', tid), where('receiverId', '==', uid), orderBy('timestamp', 'asc'));
+    const sentQuery = query(collection(db, 'messages'), where('senderId', '==', uid), where('receiverId', '==', tid));
+    const receivedQuery = query(collection(db, 'messages'), where('senderId', '==', tid), where('receiverId', '==', uid));
 
     const [sentSnap, receivedSnap] = await Promise.all([
       getDocs(sentQuery),
@@ -650,8 +652,12 @@
     sentSnap.forEach(doc => messages.push({ id: doc.id, sent: true, ...doc.data() }));
     receivedSnap.forEach(doc => messages.push({ id: doc.id, sent: false, ...doc.data() }));
 
-    // Sort by timestamp
-    messages.sort((a,b) => (a.timestamp?.toMillis()||0) - (b.timestamp?.toMillis()||0));
+    // Sort manually by timestamp ascending
+    messages.sort((a, b) => {
+      const aTime = a.timestamp?.toMillis ? a.timestamp.toMillis() : 0;
+      const bTime = b.timestamp?.toMillis ? b.timestamp.toMillis() : 0;
+      return aTime - bTime;
+    });
 
     // Render
     chatMessages.innerHTML = messages.map(msg => {
