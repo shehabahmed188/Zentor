@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Zentor | ملف المعلم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2a7de1;
+      --primary-hover: #1a67c4;
+      --primary-light: #e8f1fc;
+      --background: #f4f7fc;
+      --card: #ffffff;
+      --text: #0b1e33;
+      --text-secondary: #5a6d80;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px rgba(0,0,0,0.07);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+      --glass-bg: rgba(255,255,255,0.7);
+      --glass-border: rgba(255,255,255,0.5);
+      --glass-blur: blur(14px);
+      --radius: 16px;
+      --radius-lg: 20px;
+      --radius-xl: 24px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --success: #16a34a;
+      --error: #dc2626;
+    }
+    .dark {
+      --background: #0b0e14;
+      --card: #1a1f2b;
+      --text: #eef2f6;
+      --text-secondary: #9aa4b2;
+      --border: #2a3140;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow: 0 4px 6px rgba(0,0,0,0.3);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+      --glass-bg: rgba(26,31,43,0.7);
+      --glass-border: rgba(255,255,255,0.08);
+      --primary-light: #1a2b44;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+    }
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 0.75rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all var(--transition);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .logo i { font-size: 1.6rem; }
+    .nav-actions { display: flex; gap: 0.5rem; align-items: center; }
+    .nav-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 1rem;
+    }
+    .nav-btn:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .back-btn:hover { color: var(--primary); }
+    /* Container */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 6rem 5% 3rem;
+    }
+    /* Profile Header */
+    .profile-header {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow);
+    }
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      color: var(--primary);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .profile-info { flex:1; min-width: 200px; }
+    .profile-name { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .profile-meta {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+      color: var(--text-secondary);
+    }
+    .meta-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.95rem; }
+    .meta-item i { color: var(--primary); }
+    .profile-bio {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+    /* Courses Section */
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+    .course-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: all var(--transition);
+      position: relative;
+    }
+    .course-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .course-name {
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+    }
+    .course-desc {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .course-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .course-meta i { margin-left: 0.3rem; color: var(--primary); }
+    [dir="ltr"] .course-meta i { margin-left: 0; margin-right: 0.3rem; }
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.8rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      border: none;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 15px rgba(42,125,225,0.3);
+    }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      animation: modalIn 0.3s ease-out;
+    }
+    @keyframes modalIn {
+      from { opacity:0; transform: scale(0.95); }
+      to { opacity:1; transform: scale(1); }
+    }
+    .modal-title { font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .modal-text { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.2rem; }
+    .modal input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--background);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .modal input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(42,125,225,0.1);
+    }
+    .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+    .btn-cancel {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.65rem 1.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn.loading .btn-text { display: none; }
+    .btn.loading .spinner { display: inline-block; }
+    .skeleton {
+      background: linear-gradient(90deg, var(--border) 25%, transparent 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-secondary);
+    }
+    .empty-state i { font-size: 3rem; color: var(--border); margin-bottom: 1rem; }
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.9rem 1.8rem;
+      border-radius: 50px;
+      box-shadow: var(--shadow-lg);
+      z-index: 9999;
+      font-weight: 500;
+      display: none;
+      gap: 0.5rem;
+      max-width: 90vw;
+    }
+    .toast-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .toast-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    @keyframes slideUp {
+      from { opacity:0; transform: translateX(-50%) translateY(20px); }
+      to { opacity:1; transform: translateX(-50%) translateY(0); }
+    }
+    @media (max-width: 768px) {
+      .profile-header { flex-direction: column; text-align: center; padding: 1.5rem; }
+      .courses-grid { grid-template-columns: 1fr; }
+      .profile-name { font-size: 1.5rem; }
+      .avatar { width: 100px; height: 100px; font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="browse-teachers.html" class="back-btn"><i class="fas fa-arrow-right"></i> المعلمين</a>
+    </div>
+    <a href="index.html" class="logo"><i class="fas fa-graduation-cap"></i> Zentor</a>
+    <div class="nav-actions">
+      <button class="nav-btn" id="langToggle" title="English"><i class="fas fa-globe"></i></button>
+      <button class="nav-btn" id="darkToggle" title="الوضع الليلي"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Profile Header (skeleton initially) -->
+    <div class="profile-header" id="profileHeader">
+      <div class="skeleton" style="width:120px;height:120px;border-radius:50%;"></div>
+      <div class="profile-info" style="flex:1">
+        <div class="skeleton" style="height:2rem;width:60%;margin-bottom:0.5rem;"></div>
+        <div class="skeleton" style="height:1rem;width:40%;margin-bottom:0.5rem;"></div>
+        <div class="skeleton" style="height:1rem;width:80%;margin-bottom:0.5rem;"></div>
+      </div>
+    </div>
+
+    <!-- Courses -->
+    <h2 class="section-title"><i class="fas fa-book-open"></i> <span id="coursesTitle">الكورسات المتاحة</span></h2>
+    <div class="courses-grid" id="coursesGrid">
+      <div class="course-card"><div class="skeleton" style="height:1.2rem;width:70%;margin-bottom:1rem;"></div><div class="skeleton" style="height:1rem;width:90%;margin-bottom:1rem;"></div><div class="skeleton" style="height:2rem;width:40%;"></div></div>
+    </div>
+    <div class="empty-state" id="coursesEmpty" style="display:none">
+      <i class="fas fa-book-open"></i>
+      <p>لا توجد كورسات متاحة حالياً</p>
+    </div>
+  </div>
+
+  <!-- Join Course Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h3 class="modal-title" id="modalTitle">انضم إلى الكورس</h3>
+      <p class="modal-text" id="modalText">أدخل كود الاشتراك للانضمام (إن وجد). إذا لم يكن هناك كود، اتركه فارغاً واضغط انضمام.</p>
+      <input type="text" id="joinCode" placeholder="كود الاشتراك (اختياري)">
+      <div class="modal-actions">
+        <button class="btn-cancel" id="cancelJoin">إلغاء</button>
+        <button class="btn btn-primary" id="confirmJoin">
+          <span class="btn-text">انضمام</span>
+          <span class="spinner"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      getDoc, 
+      setDoc, 
+      collection, 
+      getDocs, 
+      serverTimestamp,
+      query,
+      where
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBOd-cHm8J84BMwdlP8a3zOVlK8sboUFj0",
+      authDomain: "zentor-caaf1.firebaseapp.com",
+      projectId: "zentor-caaf1",
+      storageBucket: "zentor-caaf1.firebasestorage.app",
+      messagingSenderId: "681267238383",
+      appId: "1:681267238383:web:0c93fb405bfd6b5903921a",
+      measurementId: "G-X80GNJHMS5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const html = document.documentElement;
+    const darkToggle = document.getElementById('darkToggle');
+    const langToggle = document.getElementById('langToggle');
+    const profileHeader = document.getElementById('profileHeader');
+    const coursesGrid = document.getElementById('coursesGrid');
+    const coursesEmpty = document.getElementById('coursesEmpty');
+    const toast = document.getElementById('toast');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const joinCodeInput = document.getElementById('joinCode');
+    const confirmJoinBtn = document.getElementById('confirmJoin');
+    const cancelJoinBtn = document.getElementById('cancelJoin');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const coursesTitle = document.getElementById('coursesTitle');
+
+    let currentUser = null;
+    let currentTeacher = null;
+    let selectedCourse = null;
+
+    // Get teacherId from URL
+    const params = new URLSearchParams(window.location.search);
+    const teacherId = params.get('teacherId');
+    if (!teacherId) {
+      showToast('معرف المعلم غير موجود', 'error');
+      setTimeout(() => window.location.href = 'browse-teachers.html', 2000);
+    }
+
+    function showToast(msg, type='error') {
+      toast.textContent = msg;
+      toast.className = `toast toast-${type}`;
+      toast.style.display = 'flex';
+      clearTimeout(window._t);
+      window._t = setTimeout(() => toast.style.display = 'none', 4000);
+    }
+
+    // Dark mode
+    function setDark(on) {
+      html.classList.toggle('dark', on);
+      darkToggle.innerHTML = on ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      localStorage.setItem('zentor_dark_mode', on);
+    }
+    darkToggle.addEventListener('click', ()=> setDark(!html.classList.contains('dark')));
+    setDark(localStorage.getItem('zentor_dark_mode') === 'true');
+
+    // Language
+    function setLang(lang) {
+      html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      html.lang = lang;
+      langToggle.title = lang === 'ar' ? 'English' : 'العربية';
+      document.querySelector('.back-btn').innerHTML = lang === 'ar' ? '<i class="fas fa-arrow-right"></i> المعلمين' : '<i class="fas fa-arrow-left"></i> Teachers';
+      coursesTitle.textContent = lang === 'ar' ? 'الكورسات المتاحة' : 'Available Courses';
+      modalTitle.textContent = lang === 'ar' ? 'انضم إلى الكورس' : 'Join Course';
+      modalText.textContent = lang === 'ar' ? 'أدخل كود الاشتراك للانضمام (إن وجد). إذا لم يكن هناك كود، اتركه فارغاً واضغط انضمام.' : 'Enter the subscription code to join (if any). If no code, leave empty and press Join.';
+      joinCodeInput.placeholder = lang === 'ar' ? 'كود الاشتراك (اختياري)' : 'Subscription code (optional)';
+      confirmJoinBtn.querySelector('.btn-text').textContent = lang === 'ar' ? 'انضمام' : 'Join';
+      cancelJoinBtn.textContent = lang === 'ar' ? 'إلغاء' : 'Cancel';
+      coursesEmpty.querySelector('p').textContent = lang === 'ar' ? 'لا توجد كورسات متاحة حالياً' : 'No courses available';
+      localStorage.setItem('zentor_lang', lang);
+      // Re-render if teacher loaded
+      if (currentTeacher) renderTeacherProfile(currentTeacher);
+      if (currentTeacher) loadAndRenderCourses();
+    }
+    langToggle.addEventListener('click', ()=> setLang(html.lang === 'ar' ? 'en' : 'ar'));
+    setLang(localStorage.getItem('zentor_lang') || 'ar');
+
+    // Auth
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      if (user) loadTeacherData();
+      else loadTeacherData(); // Still load for visitors, but joining requires login
+    });
+
+    async function loadTeacherData() {
+      try {
+        if (!teacherId) return;
+        const profileRef = doc(db, 'teachers', teacherId, 'settings', 'profile');
+        const profileSnap = await getDoc(profileRef);
+        if (!profileSnap.exists()) {
+          showToast('المعلم غير موجود', 'error');
+          setTimeout(() => window.location.href = 'browse-teachers.html', 2000);
+          return;
+        }
+        currentTeacher = { id: teacherId, ...profileSnap.data() };
+        renderTeacherProfile(currentTeacher);
+        loadAndRenderCourses();
+      } catch (err) {
+        console.error(err);
+        showToast('حدث خطأ في تحميل بيانات المعلم');
+      }
+    }
+
+    function renderTeacherProfile(teacher) {
+      const initials = teacher.name ? teacher.name.charAt(0).toUpperCase() : 'U';
+      const avatar = teacher.photoURL 
+        ? `<img src="${teacher.photoURL}" class="avatar" alt="${teacher.name}">`
+        : `<div class="avatar">${initials}</div>`;
+      const subjects = teacher.subjects 
+        ? (Array.isArray(teacher.subjects) ? teacher.subjects.join('، ') : teacher.subjects)
+        : '';
+      const grades = teacher.grades
+        ? (Array.isArray(teacher.grades) ? teacher.grades.map(g => html.lang==='ar'?'الصف '+g:'Grade '+g).join('، ') : (html.lang==='ar'?'الصف '+teacher.grades:'Grade '+teacher.grades))
+        : '';
+      profileHeader.innerHTML = `
+        ${avatar}
+        <div class="profile-info">
+          <h1 class="profile-name">${teacher.name || 'معلم'}</h1>
+          <div class="profile-meta">
+            ${subjects ? `<span class="meta-item"><i class="fas fa-book"></i> ${subjects}</span>` : ''}
+            ${grades ? `<span class="meta-item"><i class="fas fa-layer-group"></i> ${grades}</span>` : ''}
+            ${teacher.experience ? `<span class="meta-item"><i class="fas fa-briefcase"></i> ${teacher.experience} ${html.lang==='ar'?'سنوات':'years'}</span>` : ''}
+          </div>
+          ${teacher.bio ? `<p class="profile-bio">${teacher.bio}</p>` : ''}
+        </div>
+      `;
+    }
+
+    async function loadAndRenderCourses() {
+      try {
+        if (!teacherId) return;
+        const coursesSnap = await getDocs(collection(db, 'teachers', teacherId, 'courses'));
+        const courses = [];
+        coursesSnap.forEach(doc => courses.push({ id: doc.id, ...doc.data() }));
+
+        if (courses.length === 0) {
+          coursesGrid.innerHTML = '';
+          coursesEmpty.style.display = 'block';
+          return;
+        }
+        coursesEmpty.style.display = 'none';
+        // Check student's existing enrollments
+        let enrolledIds = [];
+        if (currentUser) {
+          const myCoursesSnap = await getDocs(collection(db, 'students', currentUser.uid, 'courses'));
+          enrolledIds = myCoursesSnap.docs.map(doc => doc.data().courseId).filter(Boolean);
+        }
+
+        coursesGrid.innerHTML = courses.map(course => {
+          const enrolled = enrolledIds.includes(course.id);
+          return `
+            <div class="course-card">
+              <h3 class="course-name">${course.name || 'كورس بدون عنوان'}</h3>
+              <p class="course-desc">${course.description || 'لا يوجد وصف'}</p>
+              <div class="course-meta">
+                ${course.subject ? `<span><i class="fas fa-book"></i> ${course.subject}</span>` : ''}
+                ${course.grade ? `<span><i class="fas fa-layer-group"></i> ${html.lang==='ar'?'الصف '+course.grade:'Grade '+course.grade}</span>` : ''}
+              </div>
+              ${course.joinCode ? `<span class="badge"><i class="fas fa-lock"></i> ${html.lang==='ar'?'يتطلب كود':'Requires code'}</span>` : '<span class="badge"><i class="fas fa-lock-open"></i> '+(html.lang==='ar'?'مفتوح':'Open')+'</span>'}
+              <div style="margin-top:1rem;">
+                ${enrolled 
+                  ? `<button class="btn btn-success" disabled><i class="fas fa-check"></i> ${html.lang==='ar'?'منضم':'Enrolled'}</button>`
+                  : `<button class="btn btn-primary join-btn" data-course-id="${course.id}" data-course-name="${course.name||''}" data-join-code="${course.joinCode||''}"><i class="fas fa-plus"></i> ${html.lang==='ar'?'انضم للكورس':'Join Course'}</button>`
+                }
+              </div>
+            </div>
+          `;
+        });
+
+        // Add event listeners to join buttons
+        document.querySelectorAll('.join-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            if (!currentUser) {
+              showToast(html.lang==='ar'?'يرجى تسجيل الدخول أولاً':'Please login first');
+              window.location.href = 'login.html';
+              return;
+            }
+            selectedCourse = {
+              id: btn.dataset.courseId,
+              name: btn.dataset.courseName,
+              joinCode: btn.dataset.joinCode
+            };
+            joinCodeInput.value = '';
+            modalOverlay.classList.add('active');
+          });
+        });
+      } catch (err) {
+        console.error(err);
+        coursesGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>حدث خطأ</p></div>';
+      }
+    }
+
+    // Modal actions
+    cancelJoinBtn.addEventListener('click', () => {
+      modalOverlay.classList.remove('active');
+      selectedCourse = null;
+    });
+
+    confirmJoinBtn.addEventListener('click', async () => {
+      if (!selectedCourse || !currentUser) return;
+      const enteredCode = joinCodeInput.value.trim();
+      const requiredCode = selectedCourse.joinCode;
+
+      // If course requires a code, validate it
+      if (requiredCode && enteredCode !== requiredCode) {
+        showToast(html.lang==='ar'?'كود الاشتراك غير صحيح':'Invalid subscription code');
+        return;
+      }
+
+      confirmJoinBtn.classList.add('loading');
+      try {
+        const courseId = selectedCourse.id;
+        const studentId = currentUser.uid;
+
+        // Add student to teacher's course students
+        await setDoc(doc(db, 'teachers', teacherId, 'courses', courseId, 'students', studentId), {
+          joinedAt: serverTimestamp(),
+          name: currentUser.displayName || currentUser.email,
+          uid: studentId
+        });
+
+        // Add course to student's courses
+        await setDoc(doc(db, 'students', studentId, 'courses', courseId), {
+          courseId: courseId,
+          courseName: selectedCourse.name,
+          teacherId: teacherId,
+          progress: 0,
+          joinedAt: serverTimestamp()
+        });
+
+        showToast(html.lang==='ar'?'تم الانضمام بنجاح!':'Successfully joined!', 'success');
+        modalOverlay.classList.remove('active');
+        // Reload courses to reflect enrollment
+        loadAndRenderCourses();
+      } catch (err) {
+        console.error(err);
+        showToast(html.lang==='ar'?'حدث خطأ أثناء الانضمام':'Error joining course');
+      } finally {
+        confirmJoinBtn.classList.remove('loading');
+      }
+    });
+
+    // Close modal on overlay click
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.remove('active');
+        selectedCourse = null;
+      }
+    });
+
+    // Load if not redirected
+    if (teacherId) loadTeacherData();
+  </script>
+</body>
+</html>
