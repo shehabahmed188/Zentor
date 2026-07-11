@@ -30,7 +30,6 @@
       --error: #dc2626;
       --success: #16a34a;
     }
-
     .dark {
       --background: #0b0e14;
       --card: #1a1f2b;
@@ -44,13 +43,7 @@
       --glass-border: rgba(255,255,255,0.08);
       --primary-light: #1a2b44;
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
       background: var(--background);
@@ -64,36 +57,25 @@
       position: relative;
       overflow-x: hidden;
     }
-
     .bg-decoration {
       position: fixed;
-      top: -100px;
-      right: -100px;
-      width: 400px;
-      height: 400px;
+      top: -100px; right: -100px;
+      width: 400px; height: 400px;
       background: radial-gradient(circle, rgba(42,125,225,0.1) 0%, transparent 70%);
       border-radius: 50%;
-      pointer-events: none;
-      z-index: 0;
+      pointer-events: none; z-index: 0;
     }
-
     .bg-decoration-2 {
-      top: auto;
-      bottom: -100px;
-      right: auto;
-      left: -100px;
-      width: 350px;
-      height: 350px;
+      top: auto; bottom: -100px; right: auto; left: -100px;
+      width: 350px; height: 350px;
       background: radial-gradient(circle, rgba(42,125,225,0.07) 0%, transparent 70%);
     }
-
     .auth-container {
       width: 100%;
       max-width: 440px;
       position: relative;
       z-index: 1;
     }
-
     .auth-card {
       background: var(--glass-bg);
       backdrop-filter: var(--glass-blur);
@@ -104,16 +86,8 @@
       box-shadow: var(--shadow-lg);
       transition: all var(--transition);
     }
-
-    .dark .auth-card {
-      background: var(--card);
-    }
-
-    .auth-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
+    .dark .auth-card { background: var(--card); }
+    .auth-header { text-align: center; margin-bottom: 2rem; }
     .logo-link {
       display: inline-flex;
       align-items: center;
@@ -124,313 +98,119 @@
       font-weight: 800;
       margin-bottom: 0.5rem;
     }
-
-    .logo-link i {
-      font-size: 1.6rem;
-    }
-
-    .tabs {
-      display: flex;
-      border-bottom: 2px solid var(--border);
-      margin-bottom: 2rem;
-    }
-
+    .logo-link i { font-size: 1.6rem; }
+    .tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 2rem; }
     .tab-btn {
-      flex: 1;
-      padding: 0.75rem;
-      background: none;
-      border: none;
-      font-weight: 600;
-      color: var(--text-secondary);
-      cursor: pointer;
-      font-size: 1rem;
-      transition: all var(--transition);
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
+      flex: 1; padding: 0.75rem; background: none; border: none;
+      font-weight: 600; color: var(--text-secondary); cursor: pointer;
+      font-size: 1rem; transition: all var(--transition);
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
       font-family: 'Inter', sans-serif;
     }
-
-    .tab-btn.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
-    .form-panel {
-      display: none;
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    .form-panel.active {
-      display: block;
-    }
-
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .form-panel { display: none; animation: fadeIn 0.3s ease-out; }
+    .form-panel.active { display: block; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-
-    label {
-      display: block;
-      font-weight: 500;
-      margin-bottom: 0.4rem;
-      color: var(--text);
-      font-size: 0.9rem;
-    }
-
-    .input-wrapper {
-      position: relative;
-    }
-
+    .form-group { margin-bottom: 1.2rem; }
+    label { display: block; font-weight: 500; margin-bottom: 0.4rem; color: var(--text); font-size: 0.9rem; }
+    .input-wrapper { position: relative; }
     input, select {
-      width: 100%;
-      padding: 0.85rem 1rem;
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--card);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      transition: all var(--transition);
-      outline: none;
+      width: 100%; padding: 0.85rem 1rem;
+      border: 2px solid var(--border); border-radius: var(--radius);
+      background: var(--card); color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 1rem;
+      transition: all var(--transition); outline: none;
     }
-
     input:focus, select:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(42,125,225,0.1);
     }
-
     .input-icon {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-secondary);
-      pointer-events: none;
+      position: absolute; top: 50%; transform: translateY(-50%);
+      color: var(--text-secondary); pointer-events: none;
     }
-
-    [dir="rtl"] .input-icon {
-      right: 1rem;
-    }
-
-    [dir="ltr"] .input-icon {
-      left: 1rem;
-    }
-
-    [dir="rtl"] input {
-      padding-right: 2.8rem;
-    }
-
-    [dir="ltr"] input {
-      padding-left: 2.8rem;
-    }
-
-    select {
-      appearance: none;
-      cursor: pointer;
-    }
-
-    .select-wrapper {
-      position: relative;
-    }
-
+    [dir="rtl"] .input-icon { right: 1rem; }
+    [dir="ltr"] .input-icon { left: 1rem; }
+    [dir="rtl"] input { padding-right: 2.8rem; }
+    [dir="ltr"] input { padding-left: 2.8rem; }
+    select { appearance: none; cursor: pointer; }
+    .select-wrapper { position: relative; }
     .select-wrapper::after {
-      content: '\f078';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-secondary);
-      pointer-events: none;
+      content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+      position: absolute; top: 50%; transform: translateY(-50%);
+      color: var(--text-secondary); pointer-events: none;
     }
-
-    [dir="rtl"] .select-wrapper::after {
-      left: 1rem;
-    }
-
-    [dir="ltr"] .select-wrapper::after {
-      right: 1rem;
-    }
-
+    [dir="rtl"] .select-wrapper::after { left: 1rem; }
+    [dir="ltr"] .select-wrapper::after { right: 1rem; }
     .btn {
-      width: 100%;
-      padding: 0.95rem;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all var(--transition);
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      width: 100%; padding: 0.95rem; background: var(--primary);
+      color: white; border: none; border-radius: 50px;
+      font-weight: 600; font-size: 1rem; cursor: pointer;
+      transition: all var(--transition); font-family: 'Inter', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
       box-shadow: 0 4px 15px rgba(42,125,225,0.3);
     }
-
-    .btn:hover {
-      background: var(--primary-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(42,125,225,0.4);
-    }
-
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
+    .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(42,125,225,0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
     .spinner {
-      display: none;
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
+      display: none; width: 20px; height: 20px;
+      border: 2px solid rgba(255,255,255,0.3); border-top-color: white;
+      border-radius: 50%; animation: spin 0.6s linear infinite;
     }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
+    @keyframes spin { to { transform: rotate(360deg); } }
     .btn.loading .btn-text { display: none; }
     .btn.loading .spinner { display: inline-block; }
-
     .auth-footer {
-      text-align: center;
-      margin-top: 1.5rem;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
+      text-align: center; margin-top: 1.5rem;
+      color: var(--text-secondary); font-size: 0.9rem;
     }
-
-    .auth-footer a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .auth-footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Top right controls */
+    .auth-footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .auth-footer a:hover { text-decoration: underline; }
     .top-controls {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      display: flex;
-      gap: 0.5rem;
-      z-index: 10;
+      position: fixed; top: 1rem; right: 1rem;
+      display: flex; gap: 0.5rem; z-index: 10;
     }
-
-    [dir="ltr"] .top-controls {
-      right: auto;
-      left: 1rem;
-    }
-
+    [dir="ltr"] .top-controls { right: auto; left: 1rem; }
     .ctrl-btn {
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-border);
-      color: var(--text);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all var(--transition);
-      font-size: 1rem;
+      background: var(--glass-bg); backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border);
+      color: var(--text); width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all var(--transition); font-size: 1rem;
     }
-
-    .ctrl-btn:hover {
-      background: var(--primary-light);
-      border-color: var(--primary);
-      color: var(--primary);
+    .ctrl-btn:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+    .back-link {
+      position: fixed; top: 1rem; left: 1rem;
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;
+      z-index: 10; transition: color var(--transition);
     }
-
-    /* Toast */
+    [dir="ltr"] .back-link { left: auto; right: 1rem; }
+    .back-link:hover { color: var(--primary); }
     .toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 0.9rem 1.8rem;
-      border-radius: 50px;
-      box-shadow: var(--shadow-lg);
-      z-index: 9999;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      animation: slideUp 0.4s ease-out;
-      max-width: 90vw;
-      font-size: 0.95rem;
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      padding: 0.9rem 1.8rem; border-radius: 50px; box-shadow: var(--shadow-lg);
+      z-index: 9999; font-weight: 500; display: none;
+      align-items: center; gap: 0.5rem; max-width: 90vw;
     }
-
-    .toast-error {
-      background: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-    }
-
-    .toast-success {
-      background: #dcfce7;
-      color: #166534;
-      border: 1px solid #bbf7d0;
-    }
-
+    .toast-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .toast-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
     @keyframes slideUp {
       from { opacity: 0; transform: translateX(-50%) translateY(20px); }
       to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
-
-    .back-link {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      z-index: 10;
-      transition: color var(--transition);
-    }
-
-    [dir="ltr"] .back-link {
-      left: auto;
-      right: 1rem;
-    }
-
-    .back-link:hover {
-      color: var(--primary);
-    }
-
     @media (max-width: 480px) {
-      .auth-card {
-        padding: 2rem 1.5rem;
-      }
+      .auth-card { padding: 2rem 1.5rem; }
     }
   </style>
 </head>
 <body>
-
   <div class="bg-decoration"></div>
   <div class="bg-decoration bg-decoration-2"></div>
-
   <a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> الرئيسية</a>
-
   <div class="top-controls">
     <button class="ctrl-btn" id="langToggle" title="English / العربية"><i class="fas fa-globe"></i></button>
     <button class="ctrl-btn" id="darkToggle" title="الوضع الليلي"><i class="fas fa-moon"></i></button>
@@ -439,17 +219,14 @@
   <div class="auth-container">
     <div class="auth-card">
       <div class="auth-header">
-        <a href="index.html" class="logo-link">
-          <i class="fas fa-graduation-cap"></i> Zentor
-        </a>
+        <a href="index.html" class="logo-link"><i class="fas fa-graduation-cap"></i> Zentor</a>
       </div>
-
       <div class="tabs">
         <button class="tab-btn active" data-tab="login">تسجيل الدخول</button>
         <button class="tab-btn" data-tab="register">إنشاء حساب</button>
       </div>
 
-      <!-- Login Form -->
+      <!-- Login Panel -->
       <div class="form-panel active" id="login-panel">
         <form id="login-form" novalidate>
           <div class="form-group">
@@ -473,7 +250,7 @@
         </form>
       </div>
 
-      <!-- Register Form -->
+      <!-- Register Panel -->
       <div class="form-panel" id="register-panel">
         <form id="register-form" novalidate>
           <div class="form-group">
@@ -563,7 +340,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // DOM
     const html = document.documentElement;
     const darkToggle = document.getElementById('darkToggle');
     const langToggle = document.getElementById('langToggle');
@@ -579,15 +355,29 @@
 
     let currentTab = 'login';
 
-    // Toast
     function showToast(msg, type = 'error') {
       toastEl.textContent = msg;
       toastEl.className = `toast toast-${type}`;
       toastEl.style.display = 'flex';
-      clearTimeout(window._toastTimeout);
-      window._toastTimeout = setTimeout(() => {
-        toastEl.style.display = 'none';
-      }, 4000);
+      clearTimeout(window.toastTimeout);
+      window.toastTimeout = setTimeout(() => { toastEl.style.display = 'none'; }, 4000);
+    }
+
+    // ========== دالة إنشاء/ضمان وجود ملف الطالب ==========
+    async function ensureStudentProfile(uid, email, displayName = '') {
+      const profileRef = doc(db, 'students', uid, 'profile', 'info');
+      const snap = await getDoc(profileRef);
+      if (!snap.exists()) {
+        // إنشاء ملف افتراضي إذا لم يكن موجوداً
+        const name = displayName || email.split('@')[0].replace(/[._-]/g, ' ');
+        await setDoc(profileRef, {
+          name: name,
+          email: email,
+          grade: "1",
+          createdAt: serverTimestamp()
+        });
+        console.log('✅ تم إنشاء ملف الطالب تلقائياً:', uid);
+      }
     }
 
     // Dark mode
@@ -596,10 +386,8 @@
       darkToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
       darkToggle.title = isDark ? 'الوضع الفاتح' : 'الوضع الليلي';
     }
-
     const savedDark = localStorage.getItem('zentor_dark_mode') === 'true';
     applyDarkMode(savedDark);
-
     darkToggle.addEventListener('click', () => {
       const isDark = !html.classList.contains('dark');
       applyDarkMode(isDark);
@@ -607,11 +395,9 @@
     });
 
     // Language
-    function setLang(lang) {
+    function setLanguage(lang) {
       if (lang === 'en') {
-        html.dir = 'ltr';
-        html.lang = 'en';
-        langToggle.title = 'العربية';
+        html.dir = 'ltr'; html.lang = 'en'; langToggle.title = 'العربية';
         document.querySelector('.back-link').innerHTML = '<i class="fas fa-arrow-left"></i> Home';
         document.querySelector('.logo-link').innerHTML = '<i class="fas fa-graduation-cap"></i> Zentor';
         tabBtns[0].textContent = 'Login';
@@ -629,7 +415,6 @@
         document.querySelector('#reg-email').placeholder = 'example@email.com';
         document.querySelector('#reg-password').placeholder = '••••••••';
         registerBtn.querySelector('.btn-text').innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
-        // Update grade options
         const gradeSelect = document.getElementById('reg-grade');
         const grades = ['Select Grade','Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'];
         for (let i=0; i<gradeSelect.options.length; i++) {
@@ -638,9 +423,7 @@
         authFooter.innerHTML = `Don't have an account? <a href="#" id="switch-to-register">Create one</a>`;
         document.getElementById('switch-to-register').addEventListener('click', (e) => { e.preventDefault(); switchTab('register'); });
       } else {
-        html.dir = 'rtl';
-        html.lang = 'ar';
-        langToggle.title = 'English';
+        html.dir = 'rtl'; html.lang = 'ar'; langToggle.title = 'English';
         document.querySelector('.back-link').innerHTML = '<i class="fas fa-arrow-right"></i> الرئيسية';
         document.querySelector('.logo-link').innerHTML = '<i class="fas fa-graduation-cap"></i> Zentor';
         tabBtns[0].textContent = 'تسجيل الدخول';
@@ -668,13 +451,9 @@
       }
       localStorage.setItem('zentor_lang', lang);
     }
-
-    langToggle.addEventListener('click', () => {
-      setLang(html.lang === 'ar' ? 'en' : 'ar');
-    });
-
+    langToggle.addEventListener('click', () => { setLanguage(html.lang === 'ar' ? 'en' : 'ar'); });
     const savedLang = localStorage.getItem('zentor_lang') || 'ar';
-    if (savedLang && savedLang !== html.lang) setLang(savedLang);
+    if (savedLang && savedLang !== html.lang) setLanguage(savedLang);
 
     // Tab switching
     function switchTab(tab) {
@@ -693,25 +472,13 @@
         document.getElementById('switch-to-login')?.addEventListener('click', (e) => { e.preventDefault(); switchTab('login'); });
       }
     }
-
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-    });
-
-    switchToRegister.addEventListener('click', (e) => {
-      e.preventDefault();
-      switchTab('register');
-    });
+    tabBtns.forEach(btn => { btn.addEventListener('click', () => switchTab(btn.dataset.tab)); });
+    switchToRegister.addEventListener('click', (e) => { e.preventDefault(); switchTab('register'); });
 
     // Loading state
     function setLoading(btn, loading) {
-      if (loading) {
-        btn.classList.add('loading');
-        btn.disabled = true;
-      } else {
-        btn.classList.remove('loading');
-        btn.disabled = false;
-      }
+      if (loading) { btn.classList.add('loading'); btn.disabled = true; }
+      else { btn.classList.remove('loading'); btn.disabled = false; }
     }
 
     // Login
@@ -727,21 +494,15 @@
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        // Verify if student profile exists
-        const studentDoc = await getDoc(doc(db, 'students', user.uid, 'profile', 'info'));
-        if (!studentDoc.exists()) {
-          await signOut(auth);
-          showToast('هذا الحساب ليس حساب طالب');
-          setLoading(loginBtn, false);
-          return;
-        }
+
+        // ✅ إنشاء ملف الطالب تلقائياً إذا لم يكن موجوداً
+        await ensureStudentProfile(user.uid, user.email, user.displayName);
+
         showToast(html.lang === 'en' ? 'Login successful! Redirecting...' : 'تم تسجيل الدخول بنجاح! جاري التوجيه...', 'success');
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1000);
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
       } catch (error) {
         let msg = error.message;
-        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
           msg = html.lang === 'en' ? 'Incorrect email or password' : 'بريد أو كلمة مرور غير صحيحة';
         } else if (error.code === 'auth/invalid-email') {
           msg = html.lang === 'en' ? 'Invalid email' : 'بريد إلكتروني غير صالح';
@@ -771,17 +532,17 @@
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        // Save student profile
+
+        // إنشاء ملف الطالب (بالاسم والصف المختارين)
         await setDoc(doc(db, 'students', user.uid, 'profile', 'info'), {
           name: name,
           email: email,
           grade: grade,
           createdAt: serverTimestamp()
         });
+
         showToast(html.lang === 'en' ? 'Account created successfully! Redirecting...' : 'تم إنشاء الحساب بنجاح! جاري التوجيه...', 'success');
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1000);
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
       } catch (error) {
         let msg = error.message;
         if (error.code === 'auth/email-already-in-use') {
@@ -795,17 +556,12 @@
       }
     });
 
-    // Redirect if already logged in as student
+    // إعادة توجيه إذا كان مسجلاً مسبقاً
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const studentDoc = await getDoc(doc(db, 'students', user.uid, 'profile', 'info'));
-        if (studentDoc.exists()) {
-          // Already logged in as student, go to dashboard
-          window.location.href = 'dashboard.html';
-        } else {
-          // Signed in but not a student, sign out and stay
-          await signOut(auth);
-        }
+        // ضمان وجود ملف الطالب، ثم التوجيه
+        await ensureStudentProfile(user.uid, user.email, user.displayName);
+        window.location.href = 'dashboard.html';
       }
     });
   </script>
