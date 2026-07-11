@@ -52,11 +52,9 @@
       transition: background var(--transition), color var(--transition);
       overflow-x: hidden;
     }
-    /* Sidebar */
     .sidebar {
       position: fixed;
-      top: 0;
-      bottom: 0;
+      top: 0; bottom: 0;
       width: var(--sidebar-width);
       background: var(--glass-bg);
       backdrop-filter: var(--glass-blur);
@@ -65,7 +63,7 @@
       display: flex;
       flex-direction: column;
       z-index: 1000;
-      transition: transform var(--transition), left var(--transition), right var(--transition);
+      transition: transform var(--transition);
       padding: 1.5rem 1rem;
     }
     [dir="rtl"] .sidebar { right: 0; border-right: none; border-left: 1px solid var(--glass-border); }
@@ -114,7 +112,6 @@
     }
     .logout-btn:hover { background: #fee2e2; color: #dc2626; border-color: #fecaca; }
 
-    /* Main content */
     .main {
       flex: 1;
       margin-right: var(--sidebar-width);
@@ -122,8 +119,6 @@
       transition: margin var(--transition);
     }
     [dir="ltr"] .main { margin-right: 0; margin-left: var(--sidebar-width); }
-
-    /* Top bar */
     .topbar {
       display: flex;
       align-items: center;
@@ -146,11 +141,7 @@
       cursor: pointer;
       font-size: 1.2rem;
     }
-    .page-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--text);
-    }
+    .page-title { font-size: 1.8rem; font-weight: 800; }
     .top-actions { display: flex; gap: 0.5rem; }
     .action-btn {
       background: var(--glass-bg);
@@ -168,7 +159,6 @@
       font-size: 1rem;
     }
     .action-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
-    /* Overlay */
     .sidebar-overlay {
       display: none;
       position: fixed;
@@ -176,7 +166,6 @@
       background: rgba(0,0,0,0.4);
       z-index: 999;
     }
-    /* Stats grid */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
@@ -209,10 +198,7 @@
     }
     .stat-info h3 { font-size: 1.6rem; font-weight: 700; }
     .stat-info p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.2rem; }
-    /* Section */
-    .section {
-      margin-bottom: 2rem;
-    }
+    .section { margin-bottom: 2rem; }
     .section-header {
       display: flex;
       justify-content: space-between;
@@ -220,12 +206,7 @@
       margin-bottom: 1rem;
     }
     .section-title { font-size: 1.3rem; font-weight: 700; }
-    .see-all {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
+    .see-all { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
     .courses-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
@@ -258,12 +239,7 @@
       transition: width 0.5s ease;
     }
     .progress-text { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: 0.8rem; }
-    /* Activities */
-    .activity-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
+    .activity-list { display: flex; flex-direction: column; gap: 0.75rem; }
     .activity-item {
       background: var(--card);
       border-radius: var(--radius);
@@ -282,7 +258,6 @@
     .activity-text { flex:1; }
     .activity-text strong { display: block; }
     .activity-time { font-size: 0.8rem; color: var(--text-secondary); }
-    /* Skeleton */
     .skeleton {
       background: linear-gradient(90deg, var(--border) 25%, transparent 50%, var(--border) 75%);
       background-size: 200% 100%;
@@ -302,7 +277,6 @@
       color: var(--text-secondary);
     }
     .empty-state i { font-size: 3rem; color: var(--border); margin-bottom: 1rem; }
-    /* Toast */
     .toast {
       position: fixed;
       bottom: 2rem;
@@ -325,7 +299,6 @@
       from { opacity:0; transform: translateX(-50%) translateY(20px); }
       to { opacity:1; transform: translateX(-50%) translateY(0); }
     }
-
     @media (max-width: 768px) {
       .sidebar {
         transform: translateX(100%);
@@ -371,14 +344,12 @@
     </div>
   </div>
 
-  <!-- Stats -->
   <div class="stats-grid" id="statsGrid">
     <div class="stat-card skeleton"><div class="skeleton-avatar skeleton"></div><div class="stat-info"><div class="skeleton-text skeleton"></div><div class="skeleton-text skeleton"></div></div></div>
     <div class="stat-card skeleton"><div class="skeleton-avatar skeleton"></div><div class="stat-info"><div class="skeleton-text skeleton"></div><div class="skeleton-text skeleton"></div></div></div>
     <div class="stat-card skeleton"><div class="skeleton-avatar skeleton"></div><div class="stat-info"><div class="skeleton-text skeleton"></div><div class="skeleton-text skeleton"></div></div></div>
   </div>
 
-  <!-- Current Courses -->
   <div class="section">
     <div class="section-header"><h2 class="section-title">كورساتي الحالية</h2><a href="my-courses.html" class="see-all">عرض الكل</a></div>
     <div class="courses-grid" id="coursesGrid">
@@ -387,7 +358,6 @@
     <div class="empty-state" id="coursesEmpty" style="display:none;"><i class="fas fa-book-open"></i><p>لا توجد كورسات بعد</p></div>
   </div>
 
-  <!-- Recent Activities -->
   <div class="section">
     <div class="section-header"><h2 class="section-title">آخر النشاطات</h2></div>
     <div class="activity-list" id="activitiesList">
@@ -402,7 +372,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-  import { getFirestore, doc, getDoc, collection, getDocs, query, where, orderBy, limit, Timestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, collection, getDocs, query, where, orderBy, limit, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBOd-cHm8J84BMwdlP8a3zOVlK8sboUFj0",
@@ -418,7 +388,6 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // UI elements
   const html = document.documentElement;
   const darkToggle = document.getElementById('darkToggle');
   const langToggle = document.getElementById('langToggle');
@@ -434,7 +403,6 @@
 
   let currentStudentId = null;
 
-  // Toast
   function showToast(msg, type='error') {
     toast.textContent = msg;
     toast.className = `toast toast-${type}`;
@@ -457,15 +425,14 @@
     html.dir = lang === 'ar' ? 'rtl' : 'ltr';
     html.lang = lang;
     langToggle.title = lang === 'ar' ? 'English' : 'العربية';
-    // Update sidebar links & titles
     document.querySelector('.page-title').textContent = lang === 'ar' ? 'لوحة التحكم' : 'Dashboard';
-    document.querySelectorAll('.sidebar-link')[0].innerHTML = lang === 'ar' ? '<i class="fas fa-th-large"></i> لوحة التحكم' : '<i class="fas fa-th-large"></i> Dashboard';
-    document.querySelectorAll('.sidebar-link')[1].innerHTML = lang === 'ar' ? '<i class="fas fa-book-open"></i> كورساتي' : '<i class="fas fa-book-open"></i> My Courses';
-    document.querySelectorAll('.sidebar-link')[2].innerHTML = lang === 'ar' ? '<i class="fas fa-chalkboard-teacher"></i> المعلمين' : '<i class="fas fa-chalkboard-teacher"></i> Teachers';
-    document.querySelectorAll('.sidebar-link')[3].innerHTML = lang === 'ar' ? '<i class="fas fa-tasks"></i> الواجبات' : '<i class="fas fa-tasks"></i> Assignments';
-    document.querySelectorAll('.sidebar-link')[4].innerHTML = lang === 'ar' ? '<i class="fas fa-comments"></i> الرسائل' : '<i class="fas fa-comments"></i> Messages';
-    document.querySelectorAll('.sidebar-link')[5].innerHTML = lang === 'ar' ? '<i class="fas fa-user-circle"></i> الملف الشخصي' : '<i class="fas fa-user-circle"></i> Profile';
-    document.querySelectorAll('.sidebar-link')[6].innerHTML = lang === 'ar' ? '<i class="fas fa-cog"></i> الإعدادات' : '<i class="fas fa-cog"></i> Settings';
+    const links = document.querySelectorAll('.sidebar-link');
+    const arabicLabels = ['لوحة التحكم','كورساتي','المعلمين','الواجبات','الرسائل','الملف الشخصي','الإعدادات'];
+    const englishLabels = ['Dashboard','My Courses','Teachers','Assignments','Messages','Profile','Settings'];
+    const icons = ['fa-th-large','fa-book-open','fa-chalkboard-teacher','fa-tasks','fa-comments','fa-user-circle','fa-cog'];
+    links.forEach((link, i) => {
+      link.innerHTML = `<i class="fas ${icons[i]}"></i> ${lang === 'ar' ? arabicLabels[i] : englishLabels[i]}`;
+    });
     document.getElementById('logoutBtn').innerHTML = lang === 'ar' ? '<i class="fas fa-sign-out-alt"></i> تسجيل الخروج' : '<i class="fas fa-sign-out-alt"></i> Logout';
     document.querySelector('.section-title').textContent = lang === 'ar' ? 'كورساتي الحالية' : 'Current Courses';
     document.querySelector('.see-all').textContent = lang === 'ar' ? 'عرض الكل' : 'View All';
@@ -485,42 +452,45 @@
     overlay.classList.remove('active');
   });
 
-  // Logout
   document.getElementById('logoutBtn').addEventListener('click', async ()=>{
     await signOut(auth);
     window.location.href = 'login.html';
   });
 
+  // ========== ضمان وجود ملف الطالب ==========
+  async function ensureStudentProfile(uid, email) {
+    const profileRef = doc(db, 'students', uid, 'profile', 'info');
+    const snap = await getDoc(profileRef);
+    if (!snap.exists()) {
+      const name = email.split('@')[0].replace(/[._-]/g, ' ');
+      await setDoc(profileRef, {
+        name: name,
+        email: email,
+        grade: "1",
+        createdAt: serverTimestamp()
+      });
+      console.log('✅ تم إنشاء ملف الطالب من dashboard');
+    }
+  }
+
   // Auth state
   onAuthStateChanged(auth, async (user) => {
     if (!user) { window.location.href = 'login.html'; return; }
+    // إنشاء الملف الشخصي تلقائياً إذا لم يكن موجوداً، دون طرد المستخدم
+    await ensureStudentProfile(user.uid, user.email);
     currentStudentId = user.uid;
-
-    // Check student profile
-    const profileSnap = await getDoc(doc(db, 'students', user.uid, 'profile', 'info'));
-    if (!profileSnap.exists()) {
-      await signOut(auth);
-      showToast('هذا الحساب ليس حساب طالب');
-      setTimeout(()=> window.location.href = 'login.html', 2000);
-      return;
-    }
-
-    // Load dashboard data
     loadDashboard(user.uid);
   });
 
   async function loadDashboard(uid) {
     try {
-      // Fetch enrolled courses
       const coursesSnap = await getDocs(collection(db, 'students', uid, 'courses'));
       const courses = [];
       coursesSnap.forEach(doc => courses.push({ id: doc.id, ...doc.data() }));
 
-      // Stats
       const totalCourses = courses.length;
       const avgProgress = totalCourses ? Math.round(courses.reduce((sum, c) => sum + (c.progress || 0), 0) / totalCourses) : 0;
 
-      // Pending assignments: loop through courses, get assignments, check submissions
       let pendingAssignments = 0;
       for (const course of courses) {
         const teacherId = course.teacherId;
@@ -537,7 +507,6 @@
         }
       }
 
-      // Render stats
       statsGrid.innerHTML = `
         <div class="stat-card">
           <div class="stat-icon"><i class="fas fa-book-open"></i></div>
@@ -553,7 +522,6 @@
         </div>
       `;
 
-      // Render courses (last 4)
       if (totalCourses === 0) {
         coursesGrid.innerHTML = '';
         coursesEmpty.style.display = 'block';
@@ -569,7 +537,6 @@
         `).join('');
       }
 
-      // Recent activities (from students/{uid}/activities)
       const activitiesQuery = query(collection(db, 'students', uid, 'activities'), orderBy('timestamp', 'desc'), limit(5));
       const activitiesSnap = await getDocs(activitiesQuery);
       if (activitiesSnap.empty) {
