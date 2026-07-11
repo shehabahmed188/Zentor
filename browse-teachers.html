@@ -411,10 +411,9 @@
     langToggle.addEventListener('click', ()=> setLang(html.lang === 'ar' ? 'en' : 'ar'));
     setLang(localStorage.getItem('zentor_lang') || 'ar');
 
-    // ========== التحقق من تسجيل الدخول ==========
+    // 🛡️ حماية الصفحة: تتطلب تسجيل الدخول
     onAuthStateChanged(auth, (user) => {
       if (!user) {
-        // توجيه إلى صفحة الدخول إذا لم يسجل الدخول
         window.location.href = 'login.html';
         return;
       }
