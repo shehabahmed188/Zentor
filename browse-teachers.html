@@ -51,7 +51,6 @@
       transition: background var(--transition), color var(--transition);
       padding-top: 70px;
     }
-    /* Navbar */
     .navbar {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -120,7 +119,6 @@
       color: var(--text-secondary);
       font-size: 1.1rem;
     }
-    /* Filters */
     .filters {
       display: flex;
       gap: 1rem;
@@ -148,7 +146,6 @@
       font-size: 0.95rem;
       cursor: pointer;
       appearance: none;
-      -webkit-appearance: none;
       min-width: 200px;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%235a6d80' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
@@ -165,7 +162,6 @@
       box-shadow: 0 0 0 3px rgba(42,125,225,0.1);
       outline: none;
     }
-    /* Teachers grid */
     .teachers-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -229,16 +225,6 @@
       border: none;
       font-family: 'Inter', sans-serif;
     }
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 4px 15px rgba(42,125,225,0.3);
-    }
-    .btn-primary:hover {
-      background: var(--primary-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(42,125,225,0.4);
-    }
     .btn-outline {
       background: transparent;
       border: 2px solid var(--primary);
@@ -285,7 +271,6 @@
       grid-column: 1 / -1;
     }
     .empty-state i { font-size: 3.5rem; color: var(--border); margin-bottom: 1rem; }
-    /* Toast */
     .toast {
       position: fixed;
       bottom: 2rem;
@@ -316,10 +301,9 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
   <nav class="navbar">
     <div style="display:flex; align-items:center; gap:1rem;">
-      <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-right"></i> الرئيسية</a>
+      <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-right"></i> لوحة التحكم</a>
     </div>
     <a href="index.html" class="logo"><i class="fas fa-graduation-cap"></i> Zentor</a>
     <div class="nav-actions">
@@ -334,7 +318,6 @@
       <p class="page-subtitle">اختر معلمك المفضل وابدأ التعلم</p>
     </div>
 
-    <!-- Filters -->
     <div class="filters">
       <div class="filter-group">
         <label class="filter-label" for="subjectFilter">المادة</label>
@@ -350,9 +333,7 @@
       </div>
     </div>
 
-    <!-- Teachers Grid -->
     <div class="teachers-grid" id="teachersGrid">
-      <!-- Skeleton loading (3 cards) -->
       <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-line"></div><div class="skeleton-line" style="width:50%"></div></div>
       <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-line"></div><div class="skeleton-line" style="width:50%"></div></div>
       <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-line"></div><div class="skeleton-line" style="width:50%"></div></div>
@@ -405,7 +386,6 @@
       window._t = setTimeout(() => toast.style.display = 'none', 4000);
     }
 
-    // Dark mode
     function setDark(on) {
       html.classList.toggle('dark', on);
       darkToggle.innerHTML = on ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
@@ -414,13 +394,11 @@
     darkToggle.addEventListener('click', ()=> setDark(!html.classList.contains('dark')));
     setDark(localStorage.getItem('zentor_dark_mode') === 'true');
 
-    // Language
     function setLang(lang) {
       html.dir = lang === 'ar' ? 'rtl' : 'ltr';
       html.lang = lang;
       langToggle.title = lang === 'ar' ? 'English' : 'العربية';
-      // Update static texts
-      document.querySelector('.back-btn').innerHTML = lang === 'ar' ? '<i class="fas fa-arrow-right"></i> الرئيسية' : '<i class="fas fa-arrow-left"></i> Home';
+      document.querySelector('.back-btn').innerHTML = lang === 'ar' ? '<i class="fas fa-arrow-right"></i> لوحة التحكم' : '<i class="fas fa-arrow-left"></i> Dashboard';
       document.querySelector('.page-title').textContent = lang === 'ar' ? 'تصفح المعلمين' : 'Browse Teachers';
       document.querySelector('.page-subtitle').textContent = lang === 'ar' ? 'اختر معلمك المفضل وابدأ التعلم' : 'Choose your favorite teacher and start learning';
       document.querySelector('label[for="subjectFilter"]').textContent = lang === 'ar' ? 'المادة' : 'Subject';
@@ -428,13 +406,22 @@
       subjectFilter.options[0].textContent = lang === 'ar' ? 'جميع المواد' : 'All Subjects';
       gradeFilter.options[0].textContent = lang === 'ar' ? 'جميع الصفوف' : 'All Grades';
       localStorage.setItem('zentor_lang', lang);
-      // Re-render cards to reflect language (only if teachers loaded)
       if (allTeachers.length > 0) renderTeachers(filterTeachers());
     }
     langToggle.addEventListener('click', ()=> setLang(html.lang === 'ar' ? 'en' : 'ar'));
     setLang(localStorage.getItem('zentor_lang') || 'ar');
 
-    // Fetch teachers
+    // ========== التحقق من تسجيل الدخول ==========
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        // توجيه إلى صفحة الدخول إذا لم يسجل الدخول
+        window.location.href = 'login.html';
+        return;
+      }
+      currentUser = user;
+      loadTeachers();
+    });
+
     async function loadTeachers() {
       try {
         teachersGrid.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-pulse"></i><p>جار تحميل المعلمين...</p></div>';
@@ -484,13 +471,11 @@
         }
       });
 
-      // Subject filter
       subjectFilter.innerHTML = `<option value="">${html.lang === 'ar' ? 'جميع المواد' : 'All Subjects'}</option>`;
       Array.from(subjects).sort().forEach(s => {
         subjectFilter.innerHTML += `<option value="${s}">${s}</option>`;
       });
 
-      // Grade filter
       gradeFilter.innerHTML = `<option value="">${html.lang === 'ar' ? 'جميع الصفوف' : 'All Grades'}</option>`;
       Array.from(grades).sort((a,b) => parseInt(a)-parseInt(b)).forEach(g => {
         gradeFilter.innerHTML += `<option value="${g}">${html.lang === 'ar' ? 'الصف ' + g : 'Grade ' + g}</option>`;
@@ -549,20 +534,8 @@
       }
     }
 
-    // Event listeners for filters
     subjectFilter.addEventListener('change', () => renderTeachers(filterTeachers()));
     gradeFilter.addEventListener('change', () => renderTeachers(filterTeachers()));
-
-    // Auth state (optional for UI)
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-      if (user) {
-        // Could show dashboard link, but not necessary
-      }
-    });
-
-    // Start loading
-    loadTeachers();
   </script>
 </body>
 </html>
