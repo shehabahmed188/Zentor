@@ -26,7 +26,6 @@
       --glass-blur: blur(14px);
       --radius: 16px;
       --radius-lg: 20px;
-      --radius-xl: 24px;
       --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .dark {
@@ -53,222 +52,83 @@
     }
     .navbar {
       position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
+      top: 0; left: 0; right: 0; z-index: 1000;
       background: var(--glass-bg);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       border-bottom: 1px solid var(--glass-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 5%;
-      transition: all var(--transition);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 5%; transition: all var(--transition);
     }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--primary);
-      text-decoration: none;
-    }
+    .logo { display: flex; align-items: center; gap: 0.5rem; font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; }
     .logo i { font-size: 1.6rem; }
     .nav-actions { display: flex; gap: 0.5rem; align-items: center; }
     .nav-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all var(--transition);
-      font-size: 1rem;
+      background: transparent; border: 1px solid var(--border); color: var(--text);
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all var(--transition); font-size: 1rem;
     }
     .nav-btn:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
     .back-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
+      display: flex; align-items: center; gap: 0.4rem;
+      color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500;
     }
     .back-btn:hover { color: var(--primary); }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 5%;
-    }
-    .page-header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem 5%; }
+    .page-header { text-align: center; margin-bottom: 2.5rem; }
     .page-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; }
     .page-subtitle { color: var(--text-secondary); font-size: 1.1rem; }
-    .filters {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-    .filter-label {
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-    }
+    .filters { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
+    .filter-group { display: flex; flex-direction: column; gap: 0.3rem; }
+    .filter-label { font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); }
     select {
-      padding: 0.75rem 1rem;
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--card);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      cursor: pointer;
-      appearance: none;
-      min-width: 200px;
+      padding: 0.75rem 1rem; border: 2px solid var(--border); border-radius: var(--radius);
+      background: var(--card); color: var(--text); font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; cursor: pointer; appearance: none; min-width: 200px;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%235a6d80' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: left 1rem center;
-      padding-right: 2.5rem;
+      background-repeat: no-repeat; background-position: left 1rem center; padding-right: 2.5rem;
     }
-    [dir="rtl"] select {
-      background-position: right 1rem center;
-      padding-right: 1rem;
-      padding-left: 2.5rem;
-    }
-    select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(42,125,225,0.1);
-      outline: none;
-    }
-    .teachers-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
+    [dir="rtl"] select { background-position: right 1rem center; padding-right: 1rem; padding-left: 2.5rem; }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(42,125,225,0.1); outline: none; }
+    .teachers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
     .teacher-card {
-      background: var(--card);
-      border-radius: var(--radius-lg);
-      padding: 1.8rem;
-      text-align: center;
-      border: 1px solid var(--border);
-      transition: all var(--transition);
-      position: relative;
-      overflow: hidden;
+      background: var(--card); border-radius: var(--radius-lg); padding: 1.8rem;
+      text-align: center; border: 1px solid var(--border);
+      transition: all var(--transition); position: relative; overflow: hidden;
     }
-    .teacher-card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--primary);
-    }
+    .teacher-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
     .teacher-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 0 auto 1rem;
-      background: var(--primary-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      color: var(--primary);
+      width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
+      margin: 0 auto 1rem; background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--primary);
     }
     .teacher-name { font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem; }
     .teacher-subjects { color: var(--primary); font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; }
     .teacher-grades { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.2rem; }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.7rem 1.8rem;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all var(--transition);
-      text-decoration: none;
-      border: none;
-      font-family: 'Inter', sans-serif;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.8rem; border-radius: 50px; font-weight: 600;
+      font-size: 0.95rem; cursor: pointer; transition: all var(--transition);
+      text-decoration: none; border: none; font-family: 'Inter', sans-serif;
     }
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--primary);
-      color: var(--primary);
-    }
+    .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
     .btn-outline:hover { background: var(--primary); color: white; }
-    .skeleton-card {
-      height: 280px;
-      background: var(--card);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      padding: 1.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
-    .skeleton-circle {
-      width: 80px; height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(90deg, var(--border) 25%, transparent 50%, var(--border) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-    }
-    .skeleton-line {
-      height: 1rem;
-      width: 70%;
-      background: linear-gradient(90deg, var(--border) 25%, transparent 50%, var(--border) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      border-radius: 8px;
-    }
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-    .empty-state {
-      text-align: center;
-      padding: 4rem 1rem;
-      color: var(--text-secondary);
-      grid-column: 1 / -1;
-    }
+    .skeleton-card { height: 280px; background: var(--card); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 1.8rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .skeleton-circle { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(90deg, var(--border) 25%, transparent 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    .skeleton-line { height: 1rem; width: 70%; background: linear-gradient(90deg, var(--border) 25%, transparent 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .empty-state { text-align: center; padding: 4rem 1rem; color: var(--text-secondary); grid-column: 1 / -1; }
     .empty-state i { font-size: 3.5rem; color: var(--border); margin-bottom: 1rem; }
     .toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 0.9rem 1.8rem;
-      border-radius: 50px;
-      box-shadow: var(--shadow-lg);
-      z-index: 9999;
-      font-weight: 500;
-      display: none;
-      align-items: center;
-      gap: 0.5rem;
-      max-width: 90vw;
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      padding: 0.9rem 1.8rem; border-radius: 50px; box-shadow: var(--shadow-lg);
+      z-index: 9999; font-weight: 500; display: none; align-items: center;
+      gap: 0.5rem; max-width: 90vw;
     }
     .toast-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
     .toast-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-    @keyframes slideUp {
-      from { opacity:0; transform: translateX(-50%) translateY(20px); }
-      to { opacity:1; transform: translateX(-50%) translateY(0); }
-    }
+    @keyframes slideUp { from { opacity:0; transform: translateX(-50%) translateY(20px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
     @media (max-width: 768px) {
       .teachers-grid { grid-template-columns: 1fr; }
       .page-title { font-size: 1.6rem; }
@@ -298,15 +158,11 @@
     <div class="filters">
       <div class="filter-group">
         <label class="filter-label" for="subjectFilter">المادة</label>
-        <select id="subjectFilter">
-          <option value="">جميع المواد</option>
-        </select>
+        <select id="subjectFilter"><option value="">جميع المواد</option></select>
       </div>
       <div class="filter-group">
         <label class="filter-label" for="gradeFilter">الصف</label>
-        <select id="gradeFilter">
-          <option value="">جميع الصفوف</option>
-        </select>
+        <select id="gradeFilter"><option value="">جميع الصفوف</option></select>
       </div>
     </div>
 
@@ -380,27 +236,22 @@
       subjectFilter.options[0].textContent = lang === 'ar' ? 'جميع المواد' : 'All Subjects';
       gradeFilter.options[0].textContent = lang === 'ar' ? 'جميع الصفوف' : 'All Grades';
       localStorage.setItem('zentor_lang', lang);
-      if (allTeachers.length > 0) renderTeachers(filterTeachers());
+      if (allTeachers.length) renderTeachers(filterTeachers());
     }
     langToggle.addEventListener('click', ()=> setLang(html.lang === 'ar' ? 'en' : 'ar'));
     setLang(localStorage.getItem('zentor_lang') || 'ar');
 
-    // تحميل المعلمين (يعمل للجميع)
     async function loadTeachers() {
       try {
-        const teachersCol = collection(db, 'teachers');
-        const snapshot = await getDocs(teachersCol);
+        const snapshot = await getDocs(collection(db, 'teachers'));
         const teachers = [];
-
         for (const teacherDoc of snapshot.docs) {
           const teacherId = teacherDoc.id;
-          const profileRef = doc(db, 'teachers', teacherId, 'settings', 'profile');
-          const profileSnap = await getDoc(profileRef);
+          const profileSnap = await getDoc(doc(db, 'teachers', teacherId, 'settings', 'profile'));
           if (profileSnap.exists()) {
             teachers.push({ id: teacherId, ...profileSnap.data() });
           }
         }
-
         allTeachers = teachers;
         if (teachers.length === 0) {
           teachersGrid.innerHTML = '';
@@ -412,25 +263,19 @@
         }
       } catch (error) {
         console.error(error);
-        teachersGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>حدث خطأ في تحميل البيانات</p></div>';
+        teachersGrid.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>حدث خطأ في تحميل البيانات</p></div>`;
       }
     }
 
     function populateFilters() {
       const subjects = new Set();
       const grades = new Set();
-      allTeachers.forEach(teacher => {
-        if (teacher.subjects) {
-          (Array.isArray(teacher.subjects) ? teacher.subjects : [teacher.subjects]).forEach(s => subjects.add(s));
-        }
-        if (teacher.grades) {
-          (Array.isArray(teacher.grades) ? teacher.grades : [teacher.grades]).forEach(g => grades.add(g));
-        }
+      allTeachers.forEach(t => {
+        if (t.subjects) (Array.isArray(t.subjects) ? t.subjects : [t.subjects]).forEach(s => subjects.add(s));
+        if (t.grades) (Array.isArray(t.grades) ? t.grades : [t.grades]).forEach(g => grades.add(g));
       });
-
       subjectFilter.innerHTML = `<option value="">${html.lang==='ar'?'جميع المواد':'All Subjects'}</option>`;
       Array.from(subjects).sort().forEach(s => subjectFilter.innerHTML += `<option value="${s}">${s}</option>`);
-
       gradeFilter.innerHTML = `<option value="">${html.lang==='ar'?'جميع الصفوف':'All Grades'}</option>`;
       Array.from(grades).sort((a,b)=>parseInt(a)-parseInt(b)).forEach(g => gradeFilter.innerHTML += `<option value="${g}">${html.lang==='ar'?'الصف '+g:'Grade '+g}</option>`);
     }
@@ -438,9 +283,9 @@
     function filterTeachers() {
       const sub = subjectFilter.value;
       const grd = gradeFilter.value;
-      return allTeachers.filter(teacher => {
-        let matchSub = !sub || (Array.isArray(teacher.subjects) ? teacher.subjects : [teacher.subjects]).includes(sub);
-        let matchGrade = !grd || (Array.isArray(teacher.grades) ? teacher.grades : [teacher.grades]).includes(grd);
+      return allTeachers.filter(t => {
+        let matchSub = !sub || (Array.isArray(t.subjects) ? t.subjects : [t.subjects]).includes(sub);
+        let matchGrade = !grd || (Array.isArray(t.grades) ? t.grades : [t.grades]).includes(grd);
         return matchSub && matchGrade;
       });
     }
@@ -449,27 +294,24 @@
       if (teachers.length === 0) {
         teachersGrid.innerHTML = '';
         emptyState.style.display = 'block';
-        emptyState.querySelector('h3').textContent = html.lang==='ar'?'لا يوجد معلمون مطابقون':'No matching teachers';
       } else {
         emptyState.style.display = 'none';
         teachersGrid.innerHTML = teachers.map(teacher => {
           const initials = teacher.name ? teacher.name.charAt(0).toUpperCase() : 'U';
-          const avatar = teacher.photoURL 
+          const avatar = teacher.photoURL
             ? `<img src="${teacher.photoURL}" class="teacher-avatar" alt="${teacher.name}">`
             : `<div class="teacher-avatar" style="background:var(--primary-light); color:var(--primary); font-weight:700;">${initials}</div>`;
-          const subjects = teacher.subjects ? (Array.isArray(teacher.subjects)?teacher.subjects.join('، '):teacher.subjects) : '';
-          const grades = teacher.grades ? (Array.isArray(teacher.grades)?teacher.grades.map(g=>html.lang==='ar'?'الصف '+g:'Grade '+g).join('، '):(html.lang==='ar'?'الصف '+teacher.grades:'Grade '+teacher.grades)) : '';
-          return `
-            <div class="teacher-card">
-              ${avatar}
-              <h3 class="teacher-name">${teacher.name || 'معلم'}</h3>
-              <p class="teacher-subjects">${subjects}</p>
-              <p class="teacher-grades">${grades}</p>
-              <a href="teacher-profile.html?teacherId=${teacher.id}" class="btn btn-outline">
-                <i class="fas fa-eye"></i> ${html.lang==='ar'?'عرض الملف':'View Profile'}
-              </a>
-            </div>
-          `;
+          const subjects = teacher.subjects ? (Array.isArray(teacher.subjects) ? teacher.subjects.join('، ') : teacher.subjects) : '';
+          const grades = teacher.grades ? (Array.isArray(teacher.grades) ? teacher.grades.map(g => html.lang==='ar'?'الصف '+g:'Grade '+g).join('، ') : (html.lang==='ar'?'الصف '+teacher.grades:'Grade '+teacher.grades)) : '';
+          return `<div class="teacher-card">
+            ${avatar}
+            <h3 class="teacher-name">${teacher.name || 'معلم'}</h3>
+            <p class="teacher-subjects">${subjects}</p>
+            <p class="teacher-grades">${grades}</p>
+            <a href="teacher-profile.html?teacherId=${teacher.id}" class="btn btn-outline">
+              <i class="fas fa-eye"></i> ${html.lang==='ar'?'عرض الملف':'View Profile'}
+            </a>
+          </div>`;
         }).join('');
       }
     }
@@ -477,7 +319,6 @@
     subjectFilter.addEventListener('change', ()=> renderTeachers(filterTeachers()));
     gradeFilter.addEventListener('change', ()=> renderTeachers(filterTeachers()));
 
-    // بدء التحميل مباشرة
     loadTeachers();
   </script>
 </body>
