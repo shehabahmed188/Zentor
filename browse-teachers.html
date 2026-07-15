@@ -110,15 +110,8 @@
       text-align: center;
       margin-bottom: 2.5rem;
     }
-    .page-title {
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-    .page-subtitle {
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-    }
+    .page-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .page-subtitle { color: var(--text-secondary); font-size: 1.1rem; }
     .filters {
       display: flex;
       gap: 1rem;
@@ -195,22 +188,9 @@
       font-size: 2.5rem;
       color: var(--primary);
     }
-    .teacher-name {
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-    }
-    .teacher-subjects {
-      color: var(--primary);
-      font-size: 0.9rem;
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-    }
-    .teacher-grades {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      margin-bottom: 1.2rem;
-    }
+    .teacher-name { font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .teacher-subjects { color: var(--primary); font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; }
+    .teacher-grades { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.2rem; }
     .btn {
       display: inline-flex;
       align-items: center;
@@ -230,10 +210,7 @@
       border: 2px solid var(--primary);
       color: var(--primary);
     }
-    .btn-outline:hover {
-      background: var(--primary);
-      color: white;
-    }
+    .btn-outline:hover { background: var(--primary); color: white; }
     .skeleton-card {
       height: 280px;
       background: var(--card);
@@ -303,7 +280,7 @@
 <body>
   <nav class="navbar">
     <div style="display:flex; align-items:center; gap:1rem;">
-      <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-right"></i> لوحة التحكم</a>
+      <a href="index.html" class="back-btn"><i class="fas fa-arrow-right"></i> الرئيسية</a>
     </div>
     <a href="index.html" class="logo"><i class="fas fa-graduation-cap"></i> Zentor</a>
     <div class="nav-actions">
@@ -349,7 +326,6 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
     import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -363,7 +339,6 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const db = getFirestore(app);
 
     const html = document.documentElement;
@@ -376,7 +351,6 @@
     const toast = document.getElementById('toast');
 
     let allTeachers = [];
-    let currentUser = null;
 
     function showToast(msg, type='error') {
       toast.textContent = msg;
@@ -398,7 +372,7 @@
       html.dir = lang === 'ar' ? 'rtl' : 'ltr';
       html.lang = lang;
       langToggle.title = lang === 'ar' ? 'English' : 'العربية';
-      document.querySelector('.back-btn').innerHTML = lang === 'ar' ? '<i class="fas fa-arrow-right"></i> لوحة التحكم' : '<i class="fas fa-arrow-left"></i> Dashboard';
+      document.querySelector('.back-btn').innerHTML = lang === 'ar' ? '<i class="fas fa-arrow-right"></i> الرئيسية' : '<i class="fas fa-arrow-left"></i> Home';
       document.querySelector('.page-title').textContent = lang === 'ar' ? 'تصفح المعلمين' : 'Browse Teachers';
       document.querySelector('.page-subtitle').textContent = lang === 'ar' ? 'اختر معلمك المفضل وابدأ التعلم' : 'Choose your favorite teacher and start learning';
       document.querySelector('label[for="subjectFilter"]').textContent = lang === 'ar' ? 'المادة' : 'Subject';
@@ -411,19 +385,9 @@
     langToggle.addEventListener('click', ()=> setLang(html.lang === 'ar' ? 'en' : 'ar'));
     setLang(localStorage.getItem('zentor_lang') || 'ar');
 
-    // 🛡️ حماية الصفحة: تتطلب تسجيل الدخول
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.href = 'login.html';
-        return;
-      }
-      currentUser = user;
-      loadTeachers();
-    });
-
+    // تحميل المعلمين (يعمل للجميع)
     async function loadTeachers() {
       try {
-        teachersGrid.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-pulse"></i><p>جار تحميل المعلمين...</p></div>';
         const teachersCol = collection(db, 'teachers');
         const snapshot = await getDocs(teachersCol);
         const teachers = [];
@@ -433,10 +397,7 @@
           const profileRef = doc(db, 'teachers', teacherId, 'settings', 'profile');
           const profileSnap = await getDoc(profileRef);
           if (profileSnap.exists()) {
-            teachers.push({
-              id: teacherId,
-              ...profileSnap.data()
-            });
+            teachers.push({ id: teacherId, ...profileSnap.data() });
           }
         }
 
@@ -450,7 +411,7 @@
           renderTeachers(teachers);
         }
       } catch (error) {
-        console.error('Error loading teachers:', error);
+        console.error(error);
         teachersGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>حدث خطأ في تحميل البيانات</p></div>';
       }
     }
@@ -458,43 +419,28 @@
     function populateFilters() {
       const subjects = new Set();
       const grades = new Set();
-
       allTeachers.forEach(teacher => {
         if (teacher.subjects) {
-          const subs = Array.isArray(teacher.subjects) ? teacher.subjects : [teacher.subjects];
-          subs.forEach(s => subjects.add(s));
+          (Array.isArray(teacher.subjects) ? teacher.subjects : [teacher.subjects]).forEach(s => subjects.add(s));
         }
         if (teacher.grades) {
-          const grds = Array.isArray(teacher.grades) ? teacher.grades : [teacher.grades];
-          grds.forEach(g => grades.add(g));
+          (Array.isArray(teacher.grades) ? teacher.grades : [teacher.grades]).forEach(g => grades.add(g));
         }
       });
 
-      subjectFilter.innerHTML = `<option value="">${html.lang === 'ar' ? 'جميع المواد' : 'All Subjects'}</option>`;
-      Array.from(subjects).sort().forEach(s => {
-        subjectFilter.innerHTML += `<option value="${s}">${s}</option>`;
-      });
+      subjectFilter.innerHTML = `<option value="">${html.lang==='ar'?'جميع المواد':'All Subjects'}</option>`;
+      Array.from(subjects).sort().forEach(s => subjectFilter.innerHTML += `<option value="${s}">${s}</option>`);
 
-      gradeFilter.innerHTML = `<option value="">${html.lang === 'ar' ? 'جميع الصفوف' : 'All Grades'}</option>`;
-      Array.from(grades).sort((a,b) => parseInt(a)-parseInt(b)).forEach(g => {
-        gradeFilter.innerHTML += `<option value="${g}">${html.lang === 'ar' ? 'الصف ' + g : 'Grade ' + g}</option>`;
-      });
+      gradeFilter.innerHTML = `<option value="">${html.lang==='ar'?'جميع الصفوف':'All Grades'}</option>`;
+      Array.from(grades).sort((a,b)=>parseInt(a)-parseInt(b)).forEach(g => gradeFilter.innerHTML += `<option value="${g}">${html.lang==='ar'?'الصف '+g:'Grade '+g}</option>`);
     }
 
     function filterTeachers() {
       const sub = subjectFilter.value;
       const grd = gradeFilter.value;
       return allTeachers.filter(teacher => {
-        let matchSub = true;
-        if (sub) {
-          const subs = Array.isArray(teacher.subjects) ? teacher.subjects : [teacher.subjects];
-          matchSub = subs.includes(sub);
-        }
-        let matchGrade = true;
-        if (grd) {
-          const grds = Array.isArray(teacher.grades) ? teacher.grades : [teacher.grades];
-          matchGrade = grds.includes(grd);
-        }
+        let matchSub = !sub || (Array.isArray(teacher.subjects) ? teacher.subjects : [teacher.subjects]).includes(sub);
+        let matchGrade = !grd || (Array.isArray(teacher.grades) ? teacher.grades : [teacher.grades]).includes(grd);
         return matchSub && matchGrade;
       });
     }
@@ -503,8 +449,7 @@
       if (teachers.length === 0) {
         teachersGrid.innerHTML = '';
         emptyState.style.display = 'block';
-        emptyState.querySelector('h3').textContent = html.lang === 'ar' ? 'لا يوجد معلمون مطابقون' : 'No matching teachers';
-        emptyState.querySelector('p').textContent = html.lang === 'ar' ? 'جرب فلترة مختلفة' : 'Try different filters';
+        emptyState.querySelector('h3').textContent = html.lang==='ar'?'لا يوجد معلمون مطابقون':'No matching teachers';
       } else {
         emptyState.style.display = 'none';
         teachersGrid.innerHTML = teachers.map(teacher => {
@@ -512,12 +457,8 @@
           const avatar = teacher.photoURL 
             ? `<img src="${teacher.photoURL}" class="teacher-avatar" alt="${teacher.name}">`
             : `<div class="teacher-avatar" style="background:var(--primary-light); color:var(--primary); font-weight:700;">${initials}</div>`;
-          const subjects = teacher.subjects 
-            ? (Array.isArray(teacher.subjects) ? teacher.subjects.join('، ') : teacher.subjects)
-            : '';
-          const grades = teacher.grades
-            ? (Array.isArray(teacher.grades) ? teacher.grades.map(g => html.lang === 'ar' ? 'الصف '+g : 'Grade '+g).join('، ') : (html.lang === 'ar' ? 'الصف '+teacher.grades : 'Grade '+teacher.grades))
-            : '';
+          const subjects = teacher.subjects ? (Array.isArray(teacher.subjects)?teacher.subjects.join('، '):teacher.subjects) : '';
+          const grades = teacher.grades ? (Array.isArray(teacher.grades)?teacher.grades.map(g=>html.lang==='ar'?'الصف '+g:'Grade '+g).join('، '):(html.lang==='ar'?'الصف '+teacher.grades:'Grade '+teacher.grades)) : '';
           return `
             <div class="teacher-card">
               ${avatar}
@@ -525,7 +466,7 @@
               <p class="teacher-subjects">${subjects}</p>
               <p class="teacher-grades">${grades}</p>
               <a href="teacher-profile.html?teacherId=${teacher.id}" class="btn btn-outline">
-                <i class="fas fa-eye"></i> ${html.lang === 'ar' ? 'عرض الملف' : 'View Profile'}
+                <i class="fas fa-eye"></i> ${html.lang==='ar'?'عرض الملف':'View Profile'}
               </a>
             </div>
           `;
@@ -533,8 +474,11 @@
       }
     }
 
-    subjectFilter.addEventListener('change', () => renderTeachers(filterTeachers()));
-    gradeFilter.addEventListener('change', () => renderTeachers(filterTeachers()));
+    subjectFilter.addEventListener('change', ()=> renderTeachers(filterTeachers()));
+    gradeFilter.addEventListener('change', ()=> renderTeachers(filterTeachers()));
+
+    // بدء التحميل مباشرة
+    loadTeachers();
   </script>
 </body>
 </html>
